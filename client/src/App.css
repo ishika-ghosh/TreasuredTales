@@ -1,0 +1,9 @@
+*{
+  --primary-color:#1976d2;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  display: none;
+}

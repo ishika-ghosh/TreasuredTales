@@ -1,0 +1,13 @@
+export const AUTH = "AUTH";
+export const AUTH_ERROR = "AUTH_ERROR";
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
+export const UPDATE = "UPDATE";
+export const AXIOS_ERROR = "AXIOS_ERROR";
+export const FETCH_ALL = "FETCH_ALL";
+export const CREATE_POST = "CREATE_POST";
+export const UPDATE_POST = "UPDATE_POST";
+export const DELETE = "DELETE";
+export const LOADING = "LOADING";
+export const LOGOUT = "LOGOUT";
+export const PROFILE = "PROFILE";

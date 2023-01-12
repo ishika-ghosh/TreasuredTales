@@ -1,0 +1,16 @@
+export const styles = {
+  marginTop: 8,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "20px",
+  bgcolor: "#f0f6fc",
+  position: "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  border: "2px solid #fff",
+  boxShadow: 24,
+  p: 4,
+};
