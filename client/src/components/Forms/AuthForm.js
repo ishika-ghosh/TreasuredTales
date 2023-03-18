@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import Input from "./../common/Input";
+import Input from "../common/Input";
 
 function AuthForm({ isSignUp, formData, handleChange }) {
   return (

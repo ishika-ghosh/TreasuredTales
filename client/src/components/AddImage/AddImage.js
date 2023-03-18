@@ -1,9 +1,9 @@
 import { Modal } from "@mui/material";
-import AddButton from "../AddButton/AddButton";
+import AddButton from "./AddButton";
 import { useDispatch } from "react-redux";
-import Form from "./Form";
 import { closeModal } from "../../actions/modal";
-import { setOptionId } from "./../../actions/options";
+import { setOptionId } from "../../actions/options";
+import AddAndUpdate from "./AddAndUpdate";
 
 export default function AddImage({ open }) {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export default function AddImage({ open }) {
         onClose={handleClose}
         closeAfterTransition
       >
-        <Form open={open} />
+        <AddAndUpdate open={open} />
       </Modal>
     </>
   );

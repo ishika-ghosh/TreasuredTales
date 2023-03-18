@@ -1,5 +1,5 @@
-import { updateMemory } from "./../../actions/posts";
-import { setOptionId } from "./../../actions/options";
+import { updateMemory } from "../../actions/posts";
+import { setOptionId } from "../../actions/options";
 import { createMemory } from "../../actions/posts";
 import { LOADING } from "../../actions/action";
 

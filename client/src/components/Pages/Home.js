@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../../actions/posts";
+import SnackBar from "../common/SnackBar";
 import Posts from "../Posts/Posts";
-import AddImage from "../Forms/AddImage";
+import AddImage from "./../AddImage/AddImage";
 
 function Home() {
   const user = useSelector((state) => state.userAuth.authData);
@@ -18,6 +19,7 @@ function Home() {
     <div>
       <AddImage open={modalState} />
       <Posts isloading={isloading} />
+      <SnackBar />
     </div>
   );
 }

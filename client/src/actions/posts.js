@@ -1,5 +1,13 @@
 import { getPosts, createPost, updatePost, deletePost } from "./../api/Post";
-import { FETCH_ALL, CREATE_POST, UPDATE_POST, DELETE, LOGOUT } from "./action";
+import {
+  FETCH_ALL,
+  CREATE_POST,
+  UPDATE_POST,
+  DELETE,
+  LOGOUT,
+  SUCCESS,
+} from "./action";
+import { closeModal } from "./modal";
 import { setOptionId } from "./options";
 
 export const fetchPosts = (setIsloading) => async (dispatch) => {
@@ -20,6 +28,10 @@ export const createMemory = (post) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch({ type: LOGOUT });
+  } finally {
+    dispatch(setOptionId(null));
+    dispatch(closeModal());
+    dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   }
 };
 
@@ -28,10 +40,13 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     const { data } = await updatePost(id, updatedPost);
     console.log(data);
     dispatch({ type: UPDATE_POST, payload: data });
-    dispatch(setOptionId(null));
   } catch (error) {
     console.log(error);
     dispatch({ type: LOGOUT });
+  } finally {
+    dispatch(setOptionId(null));
+    dispatch(closeModal());
+    dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
   }
 };
 export const deleteMemory = (id) => async (dispatch) => {

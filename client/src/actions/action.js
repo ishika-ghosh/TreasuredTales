@@ -11,3 +11,7 @@ export const DELETE = "DELETE";
 export const LOADING = "LOADING";
 export const LOGOUT = "LOGOUT";
 export const PROFILE = "PROFILE";
+export const OPEN_SHARE_MODAL = "OPEN_SHARE_MODAL";
+export const CLOSE_SHARE_MODAL = "CLOSE_SHARE_MODAL";
+export const SUCCESS = "SUCCESS";
+export const CLOSE_SNACKBAR = "CLOSE_SNACKBAR";

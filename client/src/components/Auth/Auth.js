@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AuthForm from "./AuthForm";
+import AuthForm from "../Forms/AuthForm";
 import { signin, signup } from "../../actions/auth";
 
 const initialState = {

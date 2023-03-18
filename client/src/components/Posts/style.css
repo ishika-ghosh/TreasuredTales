@@ -88,13 +88,12 @@
     background: rgb(189, 186, 186);
 }
 .info-button{
-    background: white;
+    background: none;
     border-radius: 2px;
     padding: 0px;
     position: absolute;
     top: 20px;
     right: 20px;
-    box-shadow: 2px 2px 10px black;
     border: none;
     cursor: pointer;
 }
