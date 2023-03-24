@@ -1,6 +1,5 @@
 import React from "react";
-import { Snackbar, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_SNACKBAR } from "../../actions/action";
 import MuiAlert from "@mui/material/Alert";
@@ -20,20 +19,13 @@ export default function SnackBar() {
     dispatch({ type: CLOSE_SNACKBAR });
   };
 
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
-
   return (
     <div>
-      <Snackbar open={snackbar.state} autoHideDuration={6000} action={action}>
+      <Snackbar
+        open={snackbar.state}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           {snackbar.message}
         </Alert>

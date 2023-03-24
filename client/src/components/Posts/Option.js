@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../actions/modal";
 import { deleteMemory } from "../../actions/posts";
 import { LOADING, OPEN_SHARE_MODAL } from "../../actions/action";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShareIcon from "@mui/icons-material/Share";
 function Option() {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
@@ -22,17 +25,19 @@ function Option() {
       <ul style={{ listStyle: "none" }}>
         <li>
           <button className="button" onClick={handleUpdate}>
-            Edit
+            <EditIcon />
+            <span style={{ marginRight: "10px" }}>Edit</span>
+          </button>
+        </li>
+
+        <li>
+          <button className="button" onClick={handleShare}>
+            <ShareIcon /> <span>Share</span>
           </button>
         </li>
         <li>
           <button className="button" onClick={handleDelete}>
-            Delete
-          </button>
-        </li>
-        <li>
-          <button className="button" onClick={handleShare}>
-            Share
+            <DeleteIcon /> <span>Delete</span>
           </button>
         </li>
       </ul>

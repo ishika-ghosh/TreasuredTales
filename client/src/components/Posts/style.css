@@ -80,9 +80,12 @@
     width: 100%;
     border: none;
     background: transparent;
-    padding: 10px 20px;
+    padding: 10px 15px;
     cursor: pointer;
     text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .button:hover{
     background: rgb(189, 186, 186);

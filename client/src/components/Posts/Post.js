@@ -1,17 +1,27 @@
+import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import moment from "moment";
-import { handleFunction } from "./handleFunction";
+import { CircularProgress } from "@mui/material";
+import { setOptionId } from "./../../actions/options";
 import Option from "./Option";
 import "./style.css";
-import { CircularProgress } from "@mui/material";
 
 export default function Post({ post }) {
-  const { title, selectedFile, _id, message, tags, createdAt } = post;
+  const { title, selectedFile, _id, message, tags, createdAt, lastEdited } =
+    post;
   const dispatch = useDispatch();
   const clickedId = useSelector((state) => state.selectedId);
   const loading = useSelector((state) => state.posts.loading);
   const currentId = useSelector((state) => state.selectedId);
+  const handleFunction = (id) => {
+    var _id = null;
+    if (clickedId) {
+      _id = null;
+    } else {
+      _id = id;
+    }
+    dispatch(setOptionId(_id));
+  };
   return (
     <div className="card">
       {loading && _id === currentId ? (
@@ -26,7 +36,11 @@ export default function Post({ post }) {
             loading="lazy"
             draggable={false}
           />
-          <h1 className="time">• Created {moment(createdAt).fromNow()}</h1>
+          <h1 className="time">
+            {lastEdited === null
+              ? `• Created ${moment(createdAt).fromNow()}`
+              : `• Last Edited ${moment(lastEdited).fromNow()}`}
+          </h1>
           <div className="card-body">
             <h1 className="caed-title">{title}</h1>
             <p className="card-message">{message}</p>
@@ -35,10 +49,7 @@ export default function Post({ post }) {
               • Created {moment(createdAt).fromNow()}
             </p>
           </div>
-          <button
-            className="info-button"
-            onClick={() => handleFunction(clickedId, dispatch, _id)}
-          >
+          <button className="info-button" onClick={() => handleFunction(_id)}>
             <MoreVertIcon />
           </button>
           {clickedId === _id && <Option />}

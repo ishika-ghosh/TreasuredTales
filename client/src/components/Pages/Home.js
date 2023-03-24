@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../../actions/posts";
 import SnackBar from "../common/SnackBar";
 import Posts from "../Posts/Posts";
+import Share from "../Share/Share";
 import AddImage from "./../AddImage/AddImage";
 
 function Home() {
@@ -19,6 +20,7 @@ function Home() {
     <div>
       <AddImage open={modalState} />
       <Posts isloading={isloading} />
+      <Share />
       <SnackBar />
     </div>
   );

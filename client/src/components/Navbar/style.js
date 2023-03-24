@@ -36,5 +36,19 @@ export const styles = {
     background: "#f75a4f",
   },
 };
-export const pages = ["Your Collection", "Shared With You", "Groups"];
+
+export const pages = [
+  {
+    path: "/",
+    name: "Your Collection",
+  },
+  {
+    path: "/shared-with-me",
+    name: "Shared With You",
+  },
+  {
+    path: "/groups",
+    name: "Groups",
+  },
+];
 export const settings = ["Profile", "Account", "Logout"];

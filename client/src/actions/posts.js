@@ -1,4 +1,10 @@
-import { getPosts, createPost, updatePost, deletePost } from "./../api/Post";
+import {
+  getPosts,
+  createPost,
+  updatePost,
+  deletePost,
+  sharePost,
+} from "./../api/Post";
 import {
   FETCH_ALL,
   CREATE_POST,
@@ -6,6 +12,7 @@ import {
   DELETE,
   LOGOUT,
   SUCCESS,
+  SHARE_POST_ERROR,
 } from "./action";
 import { closeModal } from "./modal";
 import { setOptionId } from "./options";
@@ -57,5 +64,21 @@ export const deleteMemory = (id) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch({ type: LOGOUT });
+  }
+};
+export const shareMemory = (id, shareData) => async (dispatch) => {
+  try {
+    const { data } = await sharePost(id, shareData);
+    console.log(data);
+    dispatch({ type: UPDATE_POST, payload: data });
+    dispatch(setOptionId(null));
+    dispatch({
+      type: SUCCESS,
+      payload: "Your memory has been successfully shared",
+    });
+  } catch (err) {
+    const { response } = err;
+    console.log(err);
+    dispatch({ type: SHARE_POST_ERROR, payload: response.data.error });
   }
 };

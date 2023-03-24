@@ -78,7 +78,7 @@ const AddAndUpdate = React.forwardRef(({ open }, ref) => {
 });
 
 export default AddAndUpdate;
-export const styles = {
+const styles = {
   marginTop: 8,
   display: "flex",
   flexDirection: "column",
@@ -89,7 +89,7 @@ export const styles = {
   top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: { md: 400, xs: 300 },
   border: "2px solid #fff",
   boxShadow: 24,
   p: 4,
