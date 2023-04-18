@@ -18,3 +18,7 @@ export const CLOSE_SNACKBAR = "CLOSE_SNACKBAR";
 export const SHARE_POST = "SHARE_POST";
 export const SHARE_POST_ERROR = "SHARE_POST_ERROR";
 export const REMOVE_SHARE_ERROR = "REMOVE_SHARE_ERROR";
+export const FETCH_GROUP = "FETCH_GROUP";
+export const CREATE_GROUP = "CREATE_GROUP";
+export const DELETE_GROUP = "DELETE_GROUP";
+export const UPDATE_GROUP = "UPDATE_GROUP";

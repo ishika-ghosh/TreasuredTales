@@ -61,6 +61,7 @@ export const deleteMemory = (id) => async (dispatch) => {
     await deletePost(id);
     dispatch({ type: DELETE, payload: id });
     dispatch(setOptionId(null));
+    dispatch({ type: SUCCESS, payload: "Memory deleted successfully" });
   } catch (error) {
     console.log(error);
     dispatch({ type: LOGOUT });

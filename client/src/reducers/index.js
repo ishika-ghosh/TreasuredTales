@@ -5,6 +5,7 @@ import { selectedId } from "./selectedId";
 import { userAuth } from "./auth";
 import { shareModal } from "./share";
 import { snackbarState } from "./snackbar";
+import { group } from "./group";
 
 export default combineReducers({
   posts,
@@ -13,4 +14,5 @@ export default combineReducers({
   userAuth,
   shareModal,
   snackbarState,
+  group,
 });
