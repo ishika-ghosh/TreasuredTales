@@ -6,11 +6,14 @@ import Auth from "./components/Auth/Auth";
 import Home from "./components/Pages/Home";
 import Group from "./components/Pages/Group";
 import SharedWithMe from "./components/Pages/SharedWithMe";
+import SnackBar from "./components/common/SnackBar";
+import Search from "./components/common/Search";
 import "./App.css";
 
 function App() {
   const user = useSelector((state) => state.userAuth.authData);
   const [isloading, setIsloading] = useState(true);
+
   return (
     <>
       <BrowserRouter>
@@ -28,7 +31,10 @@ function App() {
             }
           />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/shared-with-me" element={<SharedWithMe />} />
+          <Route
+            path="/shared-with-me"
+            element={<SharedWithMe user={user} />}
+          />
           <Route
             path="/groups"
             element={
@@ -38,8 +44,15 @@ function App() {
                 setIsloading={setIsloading}
               />
             }
-          />
+          >
+            <Route
+              exact
+              path=":id"
+              element={<div style={{ margin: "100px" }}>Hello</div>}
+            />
+          </Route>
         </Routes>
+        <SnackBar />
       </BrowserRouter>
     </>
   );

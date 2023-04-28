@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { handleSubmit } from "./submit";
 import { setOptionId } from "../../actions/options";
-import AddAndUpdateForm from "../Forms/AddAndUpdateForm";
+import PostForm from "../Forms/PostForm";
 
 const AddAndUpdate = React.forwardRef(({ open }, ref) => {
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ const AddAndUpdate = React.forwardRef(({ open }, ref) => {
           {loading ? (
             <CircularProgress />
           ) : (
-            <AddAndUpdateForm
+            <PostForm
               postData={postData}
               handleChange={handleChange}
               handleClear={handleClear}

@@ -30,7 +30,7 @@ export const styles = {
     color: "white",
   },
   btnStyle: {
-    padding: "1em",
+    padding: "0.5rem",
     fontWeight: "400",
     border: "none",
     background: "#f75a4f",

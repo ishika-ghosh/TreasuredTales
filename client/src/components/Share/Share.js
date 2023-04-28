@@ -13,7 +13,7 @@ function Share() {
     email: "",
   });
   const dispatch = useDispatch();
-  const share = useSelector((state) => state.shareModal);
+  const share = useSelector((state) => state.modal.share);
   const currentId = useSelector((state) => state.selectedId);
   const exception = useSelector((state) => state.posts.error);
   const handleClose = () => {

@@ -14,7 +14,7 @@ import {
   SUCCESS,
   SHARE_POST_ERROR,
 } from "./action";
-import { closeModal } from "./modal";
+import { CLOSE_MODAL } from "./action";
 import { setOptionId } from "./options";
 
 export const fetchPosts = (setIsloading) => async (dispatch) => {
@@ -37,7 +37,7 @@ export const createMemory = (post) => async (dispatch) => {
     dispatch({ type: LOGOUT });
   } finally {
     dispatch(setOptionId(null));
-    dispatch(closeModal());
+    dispatch({ type: CLOSE_MODAL, payload: false });
     dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   }
 };
@@ -52,7 +52,7 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     dispatch({ type: LOGOUT });
   } finally {
     dispatch(setOptionId(null));
-    dispatch(closeModal());
+    dispatch({ type: CLOSE_MODAL, payload: false });
     dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
   }
 };

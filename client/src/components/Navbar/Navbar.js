@@ -103,7 +103,10 @@ function Navbar() {
                   <Typography textAlign="center">
                     <Link
                       to={page.path}
-                      style={{ textDecoration: "none", color: "white" }}
+                      style={{
+                        textDecoration: "none",
+                        color: "black",
+                      }}
                     >
                       {page.name}
                     </Link>
@@ -189,7 +192,7 @@ function Navbar() {
           ) : (
             <button style={styles.btnStyle} onClick={() => navigate("/auth")}>
               <Link to="/auth" style={styles.linkStyle}>
-                LogIn/SignUp
+                <Typography>Sign In</Typography>
               </Link>
             </button>
           )}

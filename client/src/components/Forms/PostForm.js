@@ -4,7 +4,7 @@ import Input from "../common/Input";
 import FileBase from "react-file-base64";
 import { useDispatch } from "react-redux";
 
-const AddAndUpdateForm = ({
+const PostForm = ({
   postData,
   handleChange,
   handleClear,
@@ -73,4 +73,4 @@ const AddAndUpdateForm = ({
   );
 };
 
-export default AddAndUpdateForm;
+export default PostForm;

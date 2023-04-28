@@ -3,7 +3,6 @@ import { posts } from "./posts";
 import { modal } from "./modal";
 import { selectedId } from "./selectedId";
 import { userAuth } from "./auth";
-import { shareModal } from "./share";
 import { snackbarState } from "./snackbar";
 import { group } from "./group";
 
@@ -12,7 +11,6 @@ export default combineReducers({
   modal,
   selectedId,
   userAuth,
-  shareModal,
   snackbarState,
   group,
 });

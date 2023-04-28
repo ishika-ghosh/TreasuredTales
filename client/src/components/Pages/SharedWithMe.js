@@ -1,19 +1,20 @@
-import { Grid, CssBaseline } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { Grid, CssBaseline, Divider } from "@mui/material";
+import Options from "./../Share/Options";
 
 function SharedWithMe() {
   return (
     <>
       <CssBaseline />
-      <Grid container spacing={3} style={{ width: "100%" }} sx={{ mt: 9 }}>
+      <Grid container spacing={3}>
         <Grid
           item
           xs={12}
           md={2}
-          style={{ height: "90vh", background: grey[400] }}
+          style={{ paddingLeft: "30px", maxHeight: "100vh" }}
         >
-          hello
+          <Options />
         </Grid>
+        <Divider orientation="vertical" variant="middle" flexItem />
         <Grid item xs={12} md={8} style={{ paddingTop: "20px" }}></Grid>
       </Grid>
     </>

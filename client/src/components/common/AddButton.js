@@ -1,13 +1,18 @@
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import { openModal } from "../../actions/modal";
+import { OPEN_MODAL, OPEN_GROUP_MODAL } from "../../actions/action";
 
-function AddButton() {
+function AddButton({ title, modal_type }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.authData);
   const handleOpen = () => {
-    dispatch(openModal());
+    if (modal_type === "POST") {
+      dispatch({ type: OPEN_MODAL, payload: true });
+    }
+    if (modal_type === "GROUP") {
+      dispatch({ type: OPEN_GROUP_MODAL });
+    }
   };
   return (
     <Button
@@ -27,7 +32,7 @@ function AddButton() {
     >
       <AddIcon sx={{ mr: "10px", ml: "0px" }} />
       <Typography variant="h8" sx={{ display: { xs: "none", md: "block" } }}>
-        Add New
+        {title}
       </Typography>
     </Button>
   );
