@@ -1,28 +1,16 @@
-import { Modal } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { CLOSE_MODAL } from "../../actions/action";
-import { setOptionId } from "../../actions/options";
+import { useSelector } from "react-redux";
 import AddAndUpdate from "./AddAndUpdate";
 import AddButton from "../common/AddButton";
+import CommonModal from "../common/CommonModal";
 
-export default function Post({ open }) {
-  const dispatch = useDispatch();
-
-  const handleClose = () => {
-    dispatch({ type: CLOSE_MODAL, payload: false });
-    dispatch(setOptionId(null));
-  };
+export default function Post() {
+  const open = useSelector((state) => state.modal.modal);
   return (
     <>
       <AddButton title={"ADD NEW"} modal_type="POST" />
-      <Modal
-        aria-labelledby="transition-modal-title"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-      >
+      <CommonModal>
         <AddAndUpdate open={open} />
-      </Modal>
+      </CommonModal>
     </>
   );
 }

@@ -14,13 +14,13 @@ export const getAllGroups = async (req, res) => {
 };
 export const createGroup = async (req, res) => {
   const groupdetails = req.body;
-  for (let index = 0; index < groupdetails.members.length; index++) {
-    const element = groupdetails.members[index];
-    console.log(element);
-    if (!(await User.exists({ email: element }))) {
-      return res.status(404).json({ error: `No email found with ${element}` });
-    }
-  }
+  // for (let index = 0; index < groupdetails.members.length; index++) {
+  //   const element = groupdetails.members[index];
+  //   console.log(element);
+  //   if (!(await User.exists({ email: element }))) {
+  //     return res.status(404).json({ error: `No email found with ${element}` });
+  //   }
+  // }
   try {
     const userIds = await User.find({
       email: { $in: groupdetails.members },

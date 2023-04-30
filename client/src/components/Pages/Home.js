@@ -6,7 +6,7 @@ import Share from "../Share/Share";
 import Post from "../AddImage/Post";
 
 function Home({ isloading, user, setIsloading }) {
-  const modalState = useSelector((state) => state.modal.post);
+  const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   useEffect(() => {
     if (user) {

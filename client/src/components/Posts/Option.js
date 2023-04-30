@@ -11,14 +11,14 @@ function Option() {
   const currentId = useSelector((state) => state.selectedId);
 
   const handleUpdate = () => {
-    dispatch({ type: OPEN_MODAL, payload: true });
+    dispatch({ type: OPEN_MODAL });
   };
   const handleDelete = () => {
     dispatch({ type: LOADING });
     dispatch(deleteMemory(currentId));
   };
   const handleShare = () => {
-    dispatch({ type: OPEN_SHARE_MODAL, payload: true });
+    dispatch({ type: OPEN_SHARE_MODAL });
   };
   return (
     <div className="option-div">

@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Alert, Box, Button, Grid } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CancelIcon from "@mui/icons-material/Cancel";
 import Input from "../common/Input";
+import { Alert, Box, Button, Grid } from "@mui/material";
 import { createNewGroup } from "../../actions/groups";
-import { GROUP_ERROR, GROUP_LOADING } from "../../actions/action";
+import { GROUP_LOADING } from "../../actions/action";
 import { API } from "../../api";
-import Search from "../common/Search";
 
 function GroupForm() {
   const user = useSelector((state) => state.userAuth.authData);
@@ -24,15 +21,14 @@ function GroupForm() {
   const handleChange = (e) => {
     setGroupData({ ...groupData, [e.target.name]: e.target.value });
   };
-  const handleAutoCompleteValue = (_, v) => {
-    setGroupData({ ...groupData, members: v });
-  };
-  const handleInputChange = (_, v) => setInputValue(v);
+  // const handleAutoCompleteValue = (_, v) => {
+  //   setGroupData({ ...groupData, members: v });
+  // };
+  // const handleInputChange = (_, v) => setInputValue(v);
   useEffect(() => {
     const func = async () => {
       const { data } = await API.get(`/search/members?q=${inputValue}`);
       setOptions(data);
-      console.log(options);
     };
     func();
   }, [inputValue]);
@@ -53,24 +49,8 @@ function GroupForm() {
             handleChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12}>
-          <Input
-            label="Description"
-            name="description"
-            value={groupData.description}
-            handleChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Search
-            options={options}
-            values={groupData.members}
-            inputValue={inputValue}
-            handleChange={handleAutoCompleteValue}
-            handleInputChange={handleInputChange}
-            optionKey="email"
-          />
-        </Grid>
+
+        <Grid item xs={12}></Grid>
         <Grid item xs={12}>
           <Button
             fullWidth

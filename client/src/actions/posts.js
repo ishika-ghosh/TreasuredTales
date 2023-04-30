@@ -32,13 +32,12 @@ export const createMemory = (post) => async (dispatch) => {
     const { data } = await createPost(post);
     console.log(data);
     dispatch({ type: CREATE_POST, payload: data });
+    dispatch(setOptionId(null));
+    dispatch({ type: CLOSE_MODAL });
+    dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   } catch (error) {
     console.log(error);
     dispatch({ type: LOGOUT });
-  } finally {
-    dispatch(setOptionId(null));
-    dispatch({ type: CLOSE_MODAL, payload: false });
-    dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   }
 };
 
@@ -47,13 +46,12 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     const { data } = await updatePost(id, updatedPost);
     console.log(data);
     dispatch({ type: UPDATE_POST, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: LOGOUT });
-  } finally {
     dispatch(setOptionId(null));
     dispatch({ type: CLOSE_MODAL, payload: false });
     dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: LOGOUT });
   }
 };
 export const deleteMemory = (id) => async (dispatch) => {

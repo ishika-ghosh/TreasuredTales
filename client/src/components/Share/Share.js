@@ -17,7 +17,7 @@ function Share() {
   const currentId = useSelector((state) => state.selectedId);
   const exception = useSelector((state) => state.posts.error);
   const handleClose = () => {
-    dispatch({ type: CLOSE_SHARE_MODAL, payload: false });
+    dispatch({ type: CLOSE_SHARE_MODAL });
     dispatch(setOptionId(null));
   };
   const handleChange = (e) => {

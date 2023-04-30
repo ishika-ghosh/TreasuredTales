@@ -1,6 +1,6 @@
 import { getAllGroups, createGroup } from "../api/group";
 import {
-  CLOSE_GROUP_MODAL,
+  CLOSE_MODAL,
   CREATE_GROUP,
   FETCH_GROUP,
   LOGOUT,
@@ -25,7 +25,7 @@ export const createNewGroup = (groupData) => async (dispatch) => {
     console.log(data);
     dispatch({ type: CREATE_GROUP, payload: data });
     dispatch({ type: SUCCESS, payload: "Group Created Successfully" });
-    dispatch({ type: CLOSE_GROUP_MODAL });
+    dispatch({ type: CLOSE_MODAL });
   } catch (err) {
     const {
       response: { data },

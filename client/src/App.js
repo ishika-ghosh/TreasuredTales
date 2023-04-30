@@ -7,7 +7,6 @@ import Home from "./components/Pages/Home";
 import Group from "./components/Pages/Group";
 import SharedWithMe from "./components/Pages/SharedWithMe";
 import SnackBar from "./components/common/SnackBar";
-import Search from "./components/common/Search";
 import "./App.css";
 
 function App() {

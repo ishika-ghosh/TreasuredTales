@@ -7,7 +7,7 @@ export const findMembers = async (req, res) => {
     try {
       const data = await User.find({
         $or: [{ name: { $regex: regex } }, { email: { $regex: regex } }],
-      });
+      }).find({ _id: { $ne: req.userId } });
 
       return res.status(200).json(data);
     } catch (error) {

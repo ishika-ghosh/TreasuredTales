@@ -15,7 +15,8 @@ export const signIn = async (req, res) => {
     const token = jwt.sign({ email: user.email, id: user._id }, "test", {
       expiresIn: "1h",
     });
-    return res.status(200).json({ data: user, token });
+    const signedInUser = await User.findById(user._id).select("-password");
+    return res.status(200).json({ data: signedInUser, token });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Server Error" });
@@ -37,10 +38,11 @@ export const signUp = async (req, res) => {
       name: `${firstName} ${lastName}`,
       password: hashedPassword,
     });
+    const signedInUser = await User.findById(newUser._id).select("-password");
     const token = jwt.sign({ email: newUser.email, id: newUser._id }, "test", {
       expiresIn: "1h",
     });
-    return res.status(200).json({ data: newUser, token });
+    return res.status(200).json({ data: signedInUser, token });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Server Error" });
