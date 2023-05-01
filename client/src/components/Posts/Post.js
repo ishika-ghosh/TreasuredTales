@@ -2,7 +2,7 @@ import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgress } from "@mui/material";
-import { setOptionId } from "./../../actions/options";
+import { UPDATE } from "../../actions/action";
 import Option from "./Option";
 import "./style.css";
 
@@ -20,7 +20,7 @@ export default function Post({ post }) {
     } else {
       _id = id;
     }
-    dispatch(setOptionId(_id));
+    dispatch({ type: UPDATE, payload: _id });
   };
   return (
     <div className="card">

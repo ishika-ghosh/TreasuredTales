@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const groupSchema = mongoose.Schema({
   name: String,
   description: String,
-  creator: mongoose.SchemaTypes.ObjectId,
+  creator: { type: mongoose.SchemaTypes.ObjectId, ref: "user" },
   createdAt: {
     type: Date,
     default: new Date(),

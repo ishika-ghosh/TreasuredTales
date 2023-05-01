@@ -3,8 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import ShareIcon from "@mui/icons-material/Share";
 import { Avatar, Box, Typography, Container, Fade, Modal } from "@mui/material";
 import ShareForm from "../Forms/ShareForm";
-import { CLOSE_SHARE_MODAL, REMOVE_SHARE_ERROR } from "./../../actions/action";
-import { setOptionId } from "./../../actions/options";
+import {
+  CLOSE_SHARE_MODAL,
+  REMOVE_SHARE_ERROR,
+  UPDATE,
+} from "./../../actions/action";
 import { shareMemory } from "./../../actions/posts";
 
 function Share() {
@@ -18,7 +21,7 @@ function Share() {
   const exception = useSelector((state) => state.posts.error);
   const handleClose = () => {
     dispatch({ type: CLOSE_SHARE_MODAL });
-    dispatch(setOptionId(null));
+    dispatch({ type: UPDATE, payload: null });
   };
   const handleChange = (e) => {
     if (exception) {

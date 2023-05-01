@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { Avatar, Box, Typography, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSubmit } from "./submit";
-import { setOptionId } from "../../actions/options";
+import { UPDATE } from "../../actions/action";
 import PostForm from "../Forms/PostForm";
 
 const AddAndUpdate = React.forwardRef((open, ref) => {
@@ -26,7 +26,7 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
   }, [post]);
 
   const handleClear = () => {
-    dispatch(setOptionId(null));
+    dispatch({ type: UPDATE, payload: null });
     setPostData({
       title: "",
       message: "",

@@ -8,6 +8,7 @@ export const snackbarState = (
       return { ...state, message: action.payload, state: true };
     case CLOSE_SNACKBAR:
       return { ...state, message: "", state: false };
+
     default:
       return state;
   }

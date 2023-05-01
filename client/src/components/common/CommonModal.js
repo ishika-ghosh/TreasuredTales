@@ -1,12 +1,12 @@
 import { Modal, Fade, Container } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setOptionId } from "../../actions/options";
+import { UPDATE } from "../../actions/action";
 function CommonModal({ children }) {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.modal);
   const handleClose = () => {
     dispatch({ type: "CLOSE_MODAL" });
-    dispatch(setOptionId(null));
+    dispatch({ type: UPDATE, payload: null });
   };
   return (
     <Modal

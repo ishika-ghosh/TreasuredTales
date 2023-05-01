@@ -3,7 +3,7 @@ import AddAndUpdate from "./AddAndUpdate";
 import AddButton from "../common/AddButton";
 import CommonModal from "../common/CommonModal";
 
-export default function Post() {
+export default function AddPost() {
   const open = useSelector((state) => state.modal.modal);
   return (
     <>

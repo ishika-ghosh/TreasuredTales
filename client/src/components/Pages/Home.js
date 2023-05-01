@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchPosts } from "../../actions/posts";
 import Posts from "../Posts/Posts";
 import Share from "../Share/Share";
-import Post from "../AddImage/Post";
+import AddPost from "../AddImage/AddPost";
 
 function Home({ isloading, user, setIsloading }) {
-  const modalState = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
@@ -15,7 +14,7 @@ function Home({ isloading, user, setIsloading }) {
   }, [dispatch, user, setIsloading]);
   return (
     <div>
-      <Post open={modalState} />
+      <AddPost />
       <Posts isloading={isloading} />
       <Share />
     </div>

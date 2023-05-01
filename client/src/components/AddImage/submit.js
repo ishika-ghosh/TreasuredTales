@@ -1,7 +1,5 @@
-import { updateMemory } from "../../actions/posts";
-import { setOptionId } from "../../actions/options";
-import { createMemory } from "../../actions/posts";
-import { LOADING } from "../../actions/action";
+import { updateMemory, createMemory } from "../../actions/posts";
+import { LOADING, UPDATE } from "../../actions/action";
 
 export const handleSubmit = (postData, dispatch, currentId, handleClear) => {
   const { title, message, selectedFile } = postData;
@@ -16,6 +14,6 @@ export const handleSubmit = (postData, dispatch, currentId, handleClear) => {
       dispatch(createMemory(postData));
       handleClear();
     }
-    dispatch(setOptionId(null));
+    dispatch({ type: UPDATE, payload: null });
   }
 };

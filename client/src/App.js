@@ -43,13 +43,12 @@ function App() {
                 setIsloading={setIsloading}
               />
             }
-          >
-            <Route
-              exact
-              path=":id"
-              element={<div style={{ margin: "100px" }}>Hello</div>}
-            />
-          </Route>
+          />
+          <Route
+            exact
+            path="/groups/:id"
+            element={<div style={{ margin: "100px" }}>Hello</div>}
+          />
         </Routes>
         <SnackBar />
       </BrowserRouter>

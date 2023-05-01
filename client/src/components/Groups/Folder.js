@@ -1,26 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ImageListItem, Typography, Checkbox } from "@mui/material";
+import { ImageListItem, Typography } from "@mui/material";
 import folder from "./folder.png";
-import { SELECTED_GROUP, CLEAR_SELECTED_GROUP } from "./../../actions/action";
+import { SELECTED_GROUP } from "./../../actions/action";
 
 function Folder({ id, name }) {
-  const [background, setBackground] = useState("#edeff0");
-  const [checked, setChecked] = useState(false);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleClick = (id) => {
-    if (checked) {
-      setChecked(false);
-      setBackground("#edeff0");
-      dispatch({ type: CLEAR_SELECTED_GROUP, payload: null });
-    } else {
-      setChecked(true);
-      setBackground("#cde2f7");
-      dispatch({ type: SELECTED_GROUP, payload: id });
-    }
+    dispatch({ type: SELECTED_GROUP, payload: id });
   };
 
   return (
@@ -31,12 +18,11 @@ function Folder({ id, name }) {
           width: "100%",
           cursor: "pointer",
           borderRadius: "5px",
-          backgroundColor: background,
+          backgroundColor: "#edeff0",
           padding: "10px",
           textAlign: "center",
         }}
         onClick={() => handleClick(id)}
-        onDoubleClick={() => navigate(`${id}`)}
       >
         <div
           style={{
@@ -49,7 +35,6 @@ function Folder({ id, name }) {
           <Typography variant="h6" color="#656566">
             {name}
           </Typography>
-          <Checkbox checked={checked} onChange={() => handleClick(id)} />
         </div>
         <div
           style={{
