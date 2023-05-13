@@ -1,13 +1,5 @@
-import { Modal, Fade, Container } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { UPDATE } from "../../actions/action";
-function CommonModal({ children }) {
-  const dispatch = useDispatch();
-  const open = useSelector((state) => state.modal.modal);
-  const handleClose = () => {
-    dispatch({ type: "CLOSE_MODAL" });
-    dispatch({ type: UPDATE, payload: null });
-  };
+import { Modal, Fade, Container, Box } from "@mui/material";
+function CommonModal({ children, open, handleClose }) {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -17,7 +9,7 @@ function CommonModal({ children }) {
     >
       <Fade in={open}>
         <Container component="main" maxWidth="xs">
-          {children}
+          <Box sx={styles}>{children}</Box>
         </Container>
       </Fade>
     </Modal>
@@ -25,3 +17,19 @@ function CommonModal({ children }) {
 }
 
 export default CommonModal;
+const styles = {
+  marginTop: 8,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "20px",
+  bgcolor: "#f0f6fc",
+  position: "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { md: 400, xs: 300 },
+  border: "2px solid #fff",
+  boxShadow: 24,
+  p: 4,
+};

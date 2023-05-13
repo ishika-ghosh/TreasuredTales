@@ -1,12 +1,13 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../../actions/posts";
 import Posts from "../Posts/Posts";
 import Share from "../Share/Share";
 import AddPost from "../AddImage/AddPost";
 
-function Home({ isloading, user, setIsloading }) {
+function Home({ isloading, setIsloading }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.userAuth.authData);
   useEffect(() => {
     if (user) {
       dispatch(fetchPosts(setIsloading));

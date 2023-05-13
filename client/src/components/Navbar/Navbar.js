@@ -55,7 +55,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ zIndex: 1250 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <ImageSearchIcon sx={styles.icon} />
@@ -152,7 +152,7 @@ function Navbar() {
           </Typography>
           {user ? (
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title="Your Profile" arrow>
                 <IconButton onClick={handleOpenUserMenu} sx={{ px: 0 }}>
                   {user.data.picture ? (
                     <Avatar alt={user.data.name} src={user.data.picture} />

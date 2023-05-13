@@ -1,6 +1,10 @@
-import { getAllGroups, createGroup } from "../api/group";
 import {
-  CLOSE_MODAL,
+  getAllGroups,
+  createGroup,
+  transferownershipofGroup,
+} from "../api/group";
+import {
+  CLOSE_GROUP_MODAL,
   CREATE_GROUP,
   FETCH_GROUP,
   LOGOUT,
@@ -25,12 +29,21 @@ export const createNewGroup = (groupData) => async (dispatch) => {
     console.log(data);
     dispatch({ type: CREATE_GROUP, payload: data });
     dispatch({ type: SUCCESS, payload: "Group Created Successfully" });
-    dispatch({ type: CLOSE_MODAL });
+    dispatch({ type: CLOSE_GROUP_MODAL });
   } catch (err) {
     const {
       response: { data },
     } = err;
     console.log(data);
     dispatch({ type: GROUP_ERROR, payload: data.error });
+  }
+};
+export const tranferownership = (id, memberId) => async (dispatch) => {
+  try {
+    const { data } = await transferownershipofGroup(id, memberId);
+    console.log(data);
+    // dispatch();
+  } catch (error) {
+    console.log(error);
   }
 };

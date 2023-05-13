@@ -1,8 +1,11 @@
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { OPEN_MODAL } from "../../actions/action";
 import { deleteMemory } from "../../actions/posts";
-import { LOADING, OPEN_SHARE_MODAL } from "../../actions/action";
+import {
+  LOADING,
+  OPEN_POST_MODAL,
+  OPEN_SHARE_MODAL,
+} from "../../actions/action";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
@@ -11,7 +14,7 @@ function Option() {
   const currentId = useSelector((state) => state.selectedId);
 
   const handleUpdate = () => {
-    dispatch({ type: OPEN_MODAL });
+    dispatch({ type: OPEN_POST_MODAL });
   };
   const handleDelete = () => {
     dispatch({ type: LOADING });

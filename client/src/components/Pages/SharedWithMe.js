@@ -1,7 +1,9 @@
 import { Grid, CssBaseline, Divider } from "@mui/material";
 import Options from "./../Share/Options";
+import { useSelector } from "react-redux";
 
 function SharedWithMe() {
+  const user = useSelector((state) => state.userAuth.authData);
   return (
     <>
       <CssBaseline />

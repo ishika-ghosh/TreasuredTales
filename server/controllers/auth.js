@@ -13,7 +13,7 @@ export const signIn = async (req, res) => {
       return res.status(400).json({ error: "Incorrect password" });
     }
     const token = jwt.sign({ email: user.email, id: user._id }, "test", {
-      expiresIn: "1h",
+      expiresIn: "30d",
     });
     const signedInUser = await User.findById(user._id).select("-password");
     return res.status(200).json({ data: signedInUser, token });
@@ -40,7 +40,7 @@ export const signUp = async (req, res) => {
     });
     const signedInUser = await User.findById(newUser._id).select("-password");
     const token = jwt.sign({ email: newUser.email, id: newUser._id }, "test", {
-      expiresIn: "1h",
+      expiresIn: "30d",
     });
     return res.status(200).json({ data: signedInUser, token });
   } catch (err) {

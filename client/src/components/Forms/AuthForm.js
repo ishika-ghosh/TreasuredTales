@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import Input from "../common/Input";
+import Password from "../common/Password";
 
 function AuthForm({ isSignUp, formData, handleChange }) {
   return (
@@ -39,24 +40,20 @@ function AuthForm({ isSignUp, formData, handleChange }) {
         />
       </Grid>
       <Grid item xs={12}>
-        <Input
-          required={true}
-          name="password"
-          label="Password"
-          type="password"
-          value={formData.password}
+        <Password
           handleChange={handleChange}
+          name="password"
+          value={formData.password}
+          label="Password"
         />
       </Grid>
       {isSignUp && (
         <Grid item xs={12}>
-          <Input
-            required={true}
+          <Password
+            handleChange={handleChange}
             name="confirmPassword"
             label="confirm Password"
-            type="password"
             value={formData.confirmPassword}
-            handleChange={handleChange}
           />
         </Grid>
       )}

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import { Avatar, Box, Typography, CircularProgress } from "@mui/material";
+import { Avatar, Typography, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSubmit } from "./submit";
-import { UPDATE } from "../../actions/action";
+import { SET_SELECTED_POST } from "../../actions/action";
 import PostForm from "../Forms/PostForm";
 
 const AddAndUpdate = React.forwardRef((open, ref) => {
@@ -26,7 +26,7 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
   }, [post]);
 
   const handleClear = () => {
-    dispatch({ type: UPDATE, payload: null });
+    dispatch({ type: SET_SELECTED_POST, payload: null });
     setPostData({
       title: "",
       message: "",
@@ -42,7 +42,7 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
     }
   };
   return (
-    <Box sx={styles}>
+    <>
       <Avatar sx={{ m: 1, bgcolor: "#1976d2" }}>
         <AddPhotoAlternateIcon />
       </Avatar>
@@ -62,24 +62,8 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
           currentId={currentId}
         />
       )}
-    </Box>
+    </>
   );
 });
 
 export default AddAndUpdate;
-const styles = {
-  marginTop: 8,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px",
-  bgcolor: "#f0f6fc",
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { md: 400, xs: 300 },
-  border: "2px solid #fff",
-  boxShadow: 24,
-  p: 4,
-};

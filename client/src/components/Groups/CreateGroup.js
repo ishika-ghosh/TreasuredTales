@@ -1,41 +1,36 @@
-import { useSelector } from "react-redux";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { Typography, CircularProgress } from "@mui/material";
 import AddButton from "../common/AddButton";
 import GroupForm from "../Forms/GroupForm";
 import CommonModal from "../common/CommonModal";
+import {
+  OPEN_GROUP_MODAL,
+  CLOSE_GROUP_MODAL,
+  CLEAR_SELECTED_GROUP,
+} from "../../actions/action";
 
 function CreateGroup() {
   const loading = useSelector((state) => state.group.loading);
-
+  const groupModal = useSelector((state) => state.modal.groupModal);
+  const dispatch = useDispatch();
+  const handleGroupModalOpen = () => {
+    dispatch({ type: OPEN_GROUP_MODAL });
+  };
+  const handleGroupModalClose = () => {
+    dispatch({ type: CLOSE_GROUP_MODAL });
+    dispatch({ type: CLEAR_SELECTED_GROUP });
+  };
   return (
     <>
-      <AddButton title="New Group" modal_type="GROUP" />
-      <CommonModal>
-        <Box sx={styles}>
-          <Typography component="h1" variant="h5" id="transition-modal-title">
-            Creating Group
-          </Typography>
-          {loading ? <CircularProgress /> : <GroupForm />}
-        </Box>
+      <AddButton title="New Group" handleOpen={handleGroupModalOpen} />
+      <CommonModal open={groupModal} handleClose={handleGroupModalClose}>
+        <Typography component="h1" variant="h5" id="transition-modal-title">
+          Creating Group
+        </Typography>
+        {loading ? <CircularProgress /> : <GroupForm />}
       </CommonModal>
     </>
   );
 }
 
 export default CreateGroup;
-const styles = {
-  marginTop: 8,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px",
-  bgcolor: "#f0f6fc",
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { md: 400, xs: 300 },
-  border: "2px solid #fff",
-  boxShadow: 24,
-  p: 4,
-};

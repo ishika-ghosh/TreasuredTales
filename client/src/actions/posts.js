@@ -12,10 +12,10 @@ import {
   DELETE,
   LOGOUT,
   SUCCESS,
-  UPDATE,
+  CLEAR_SELECTED_POST,
   SHARE_POST_ERROR,
+  CLOSE_POST_MODAL,
 } from "./action";
-import { CLOSE_MODAL } from "./action";
 
 export const fetchPosts = (setIsloading) => async (dispatch) => {
   try {
@@ -32,8 +32,8 @@ export const createMemory = (post) => async (dispatch) => {
     const { data } = await createPost(post);
     console.log(data);
     dispatch({ type: CREATE_POST, payload: data });
-    dispatch({ type: UPDATE, payload: null });
-    dispatch({ type: CLOSE_MODAL });
+    dispatch({ type: CLEAR_SELECTED_POST });
+    dispatch({ type: CLOSE_POST_MODAL });
     dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   } catch (error) {
     console.log(error);
@@ -46,8 +46,8 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     const { data } = await updatePost(id, updatedPost);
     console.log(data);
     dispatch({ type: UPDATE_POST, payload: data });
-    dispatch({ type: UPDATE, payload: null });
-    dispatch({ type: CLOSE_MODAL, payload: false });
+    dispatch({ type: CLEAR_SELECTED_POST });
+    dispatch({ type: CLOSE_POST_MODAL });
     dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
   } catch (error) {
     console.log(error);
@@ -58,7 +58,7 @@ export const deleteMemory = (id) => async (dispatch) => {
   try {
     await deletePost(id);
     dispatch({ type: DELETE, payload: id });
-    dispatch({ type: UPDATE, payload: null });
+    dispatch({ type: CLEAR_SELECTED_POST });
     dispatch({ type: SUCCESS, payload: "Memory deleted successfully" });
   } catch (error) {
     console.log(error);
@@ -70,7 +70,7 @@ export const shareMemory = (id, shareData) => async (dispatch) => {
     const { data } = await sharePost(id, shareData);
     console.log(data);
     dispatch({ type: UPDATE_POST, payload: data });
-    dispatch({ type: UPDATE, payload: null });
+    dispatch({ type: CLEAR_SELECTED_POST });
     dispatch({
       type: SUCCESS,
       payload: "Your memory has been successfully shared",

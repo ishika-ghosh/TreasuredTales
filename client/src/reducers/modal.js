@@ -1,31 +1,30 @@
-// import {
-//   OPEN_MODAL,
-//   CLOSE_MODAL,
-//   OPEN_SHARE_MODAL,
-//   CLOSE_SHARE_MODAL,
-//   OPEN_GROUP_MODAL,
-//   CLOSE_GROUP_MODAL,
-
 import {
-  CLOSE_MODAL,
-  OPEN_MODAL,
+  OPEN_GROUP_MODAL,
+  CLOSE_GROUP_MODAL,
+  OPEN_POST_MODAL,
+  CLOSE_POST_MODAL,
   OPEN_SHARE_MODAL,
   CLOSE_SHARE_MODAL,
 } from "../actions/action";
 
-// } from "../actions/action";
-export const modal = (state = { modal: false, share: false }, action) => {
+export const modal = (
+  state = { postModal: false, shareModal: false, groupModal: false },
+  action
+) => {
   switch (action.type) {
     case OPEN_SHARE_MODAL:
-      return { ...state, share: true };
+      return { ...state, shareModal: true };
     case CLOSE_SHARE_MODAL:
-      return { ...state, share: false };
-    case CLOSE_MODAL:
-      return { ...state, modal: false };
-    case OPEN_MODAL:
-      return { ...state, modal: true };
+      return { ...state, shareModal: false };
+    case OPEN_POST_MODAL:
+      return { ...state, postModal: true };
+    case CLOSE_POST_MODAL:
+      return { ...state, postModal: false };
+    case OPEN_GROUP_MODAL:
+      return { ...state, groupModal: true };
+    case CLOSE_GROUP_MODAL:
+      return { ...state, groupModal: false };
     default:
       return state;
   }
 };
-// { post: false, share: false, group: false }

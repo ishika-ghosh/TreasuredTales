@@ -1,14 +1,10 @@
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch, useSelector } from "react-redux";
-import { OPEN_MODAL } from "../../actions/action";
+import { useSelector } from "react-redux";
 
-function AddButton({ title, modal_type }) {
-  const dispatch = useDispatch();
+function AddButton({ title, handleOpen }) {
   const user = useSelector((state) => state.userAuth.authData);
-  const handleOpen = () => {
-    dispatch({ type: OPEN_MODAL });
-  };
+
   return (
     <Button
       variant="contained"

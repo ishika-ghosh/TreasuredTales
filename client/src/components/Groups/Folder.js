@@ -1,13 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ImageListItem, Typography } from "@mui/material";
 import folder from "./folder.png";
-import { SELECTED_GROUP } from "./../../actions/action";
+import { SELECTED_GROUP } from "../../actions/action";
 
 function Folder({ id, name }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const handleClick = (id) => {
     dispatch({ type: SELECTED_GROUP, payload: id });
+    navigate(`${id}`);
   };
 
   return (
