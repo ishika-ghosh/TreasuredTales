@@ -6,8 +6,10 @@ import postRoutes from "./routes/posts.js";
 import authRoutes from "./routes/auth.js";
 import groupRoutes from "./routes/groups.js";
 import searchRoutes from "./routes/search.js";
+import dotenv from "dotenv";
 
 const app = express();
+dotenv.config();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
@@ -18,8 +20,8 @@ app.use("/search", searchRoutes);
 app.get("/", (req, res) => {
   res.send("hello world");
 });
-const CONNECTION_URL =
-  "mongodb+srv://IshikaGhosh:Ishika123@cluster0.3wrb5n7.mongodb.net/?retryWrites=true&w=majority";
+const CONNECTION_URL = process.env.DATABASE_URL;
+
 const PORT = process.env.PORT || 5000;
 mongoose.set("strictQuery", false);
 mongoose

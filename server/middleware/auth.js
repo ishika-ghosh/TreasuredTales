@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
       let decoded;
 
       if (token && customToken) {
-        decoded = jwt.verify(token, "test", (err, res) => {
+        decoded = jwt.verify(token, process.env.MONGO_SECRET, (err, res) => {
           if (err) {
             return "token expired";
           }

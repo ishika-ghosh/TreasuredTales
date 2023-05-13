@@ -12,9 +12,13 @@ export const signIn = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: "Incorrect password" });
     }
-    const token = jwt.sign({ email: user.email, id: user._id }, "test", {
-      expiresIn: "30d",
-    });
+    const token = jwt.sign(
+      { email: user.email, id: user._id },
+      process.env.MONGO_SECRET,
+      {
+        expiresIn: "30d",
+      }
+    );
     const signedInUser = await User.findById(user._id).select("-password");
     return res.status(200).json({ data: signedInUser, token });
   } catch (error) {
