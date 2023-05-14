@@ -22,6 +22,7 @@ export const DELETE = "DELETE";
 export const LOADING = "LOADING";
 export const SET_SELECTED_POST = "UPDATE";
 export const CLEAR_SELECTED_POST = "CLEAR_SELECTED_POST";
+export const GET_GROUP_POSTS = "GET_GROUP_POSTS";
 //
 
 //Group actions
@@ -33,6 +34,8 @@ export const UPDATE_GROUP = "UPDATE_GROUP";
 export const GROUP_ERROR = "GROUP_ERROR";
 export const SELECTED_GROUP = "SELECTED_GROUP";
 export const CLEAR_SELECTED_GROUP = "CLEAR_SELECTED_GROUP";
+export const CURRENT_GROUP_DETAILS = "CURRENT_GROUP_DETAILS";
+export const CURRENT_GROUP_LOADING = "CURRENT_GROUP_LOADING";
 
 //snackbar actions
 export const SUCCESS = "SUCCESS";

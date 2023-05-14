@@ -2,12 +2,21 @@ import mongoose from "mongoose";
 import postMessage from "./../models/posts.js";
 import user from "../models/user.js";
 export const getPosts = async (req, res) => {
-  try {
-    console.log("in server");
-    const posts = await postMessage.find({ creator: req.userId });
-    res.status(200).json(posts);
-  } catch (error) {
-    console.log(error);
+  const { groupid: q } = req.query;
+  if (q) {
+    if (!mongoose.Types.ObjectId.isValid(q)) {
+      return res.status(404).json("Not a valid id");
+    }
+    const posts = await postMessage.find({ $in: { groups: q } });
+    return res.status(200).json(posts);
+  } else {
+    try {
+      console.log("in server");
+      const posts = await postMessage.find({ creator: req.userId });
+      res.status(200).json(posts);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 export const createPost = async (req, res) => {
@@ -19,6 +28,7 @@ export const createPost = async (req, res) => {
     createdAt: new Date().toISOString(),
   });
   try {
+    console.log(newPost);
     await newPost.save();
     res.status(201).json(newPost);
     console.log("Saved in database");

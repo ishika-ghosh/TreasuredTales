@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleSubmit } from "./submit";
 import { SET_SELECTED_POST } from "../../actions/action";
 import PostForm from "../Forms/PostForm";
+import axios from "axios";
 
 const AddAndUpdate = React.forwardRef((open, ref) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
     tags: "",
     selectedFile: "",
   });
+  const [fileLoading, setFileLoading] = useState(false);
 
   useEffect(() => {
     if (post) setPostData(post);
@@ -41,6 +43,24 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
       setPostData({ ...postData, [e.target.name]: e.target.value });
     }
   };
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setFileLoading(true);
+      axios
+        .post("https://api.cloudinary.com/v1_1/dvopc7xr8/image/upload", {
+          file: reader.result,
+          upload_preset: "trasuredTales",
+        })
+        .then((res) => {
+          setPostData({ ...postData, selectedFile: res.data.url });
+          setFileLoading(false);
+        })
+        .catch((err) => console.log(err));
+    };
+  };
   return (
     <>
       <Avatar sx={{ m: 1, bgcolor: "#1976d2" }}>
@@ -58,8 +78,9 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
           handleChange={handleChange}
           handleClear={handleClear}
           handleSubmit={handleSubmit}
-          setPostData={setPostData}
+          handleFile={handleFile}
           currentId={currentId}
+          fileLoading={fileLoading}
         />
       )}
     </>

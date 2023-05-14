@@ -9,5 +9,4 @@ export const addtoGroup = (id, newmember) =>
   API.patch(`${URL}/addtogroup/${id}`, newmember);
 export const removefromGroup = (id, memberId) =>
   API.patch(`${URL}/removefromgroup/${id}`, memberId);
-export const transferownershipofGroup = (id, memberId) =>
-  API.patch(`${URL}/transferownership/${id}`, { memberId });
+export const getGroupDetails = (id) => API.get(`${URL}/${id}`);

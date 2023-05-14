@@ -16,11 +16,9 @@ import {
 import { deepOrange } from "@mui/material/colors";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import { tranferownership } from "../../actions/groups";
 
 function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
   const dispatch = useDispatch();
@@ -35,9 +33,7 @@ function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
     setRename(false);
   };
   const handleKick = () => {};
-  const handleOwnerShip = (id) => {
-    dispatch(tranferownership(groupDetails._id, id));
-  };
+
   return (
     <div style={{ marginTop: "70px", width: 400, padding: 10 }}>
       <div>
@@ -60,7 +56,7 @@ function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
           }}
         >
           <Typography
-            variant="body1"
+            variant="h6"
             textAlign="center"
             sx={{ display: "inline" }}
           >
@@ -111,7 +107,6 @@ function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
                 key={member._id}
                 member={member}
                 show={isCreator}
-                handleOwnerShip={() => handleOwnerShip(member._id)}
                 handleKick={handleKick}
               />
             ))}
@@ -139,7 +134,7 @@ function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
 
 export default GroupDetails;
 
-const MemberDetails = ({ member, show, handleKick, handleOwnerShip }) => {
+const MemberDetails = ({ member, show, handleKick }) => {
   const user = useSelector((state) => state.userAuth.authData);
   return (
     <ListItem alignItems="flex-start">
@@ -153,16 +148,15 @@ const MemberDetails = ({ member, show, handleKick, handleOwnerShip }) => {
         </Avatar>
       </ListItemAvatar>
       <ListItemText
-        primary={member._id === user._id ? `${member.name} (You)` : null}
+        primary={
+          member._id === user.data._id
+            ? `${member.name} (You)`
+            : `${member.name}`
+        }
         secondary={<>{member.email}</>}
       />
       {show && (
         <>
-          <Tooltip title="make admin" arrow>
-            <Button variant="text" color="success" onClick={handleOwnerShip}>
-              <PublishedWithChangesIcon />
-            </Button>
-          </Tooltip>
           <Tooltip title="Kick the member" arrow>
             <Button variant="text" color="error" onClick={handleKick}>
               <RemoveCircleOutlineIcon />

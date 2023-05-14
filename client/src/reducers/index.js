@@ -6,6 +6,7 @@ import { userAuth } from "./auth";
 import { snackbarState } from "./snackbar";
 import { group } from "./group";
 import { selectedGroup } from "./selectedGroup";
+import { currentGroup } from "./groupDetails";
 
 export default combineReducers({
   posts,
@@ -15,4 +16,5 @@ export default combineReducers({
   snackbarState,
   group,
   selectedGroup,
+  currentGroup,
 });

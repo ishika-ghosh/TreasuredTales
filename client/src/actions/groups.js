@@ -1,8 +1,4 @@
-import {
-  getAllGroups,
-  createGroup,
-  transferownershipofGroup,
-} from "../api/group";
+import { getAllGroups, createGroup, getGroupDetails } from "../api/group";
 import {
   CLOSE_GROUP_MODAL,
   CREATE_GROUP,
@@ -10,6 +6,7 @@ import {
   LOGOUT,
   SUCCESS,
   GROUP_ERROR,
+  CURRENT_GROUP_DETAILS,
 } from "./action";
 
 export const fetchAllGroups = (setIsloading) => async (dispatch) => {
@@ -38,11 +35,12 @@ export const createNewGroup = (groupData) => async (dispatch) => {
     dispatch({ type: GROUP_ERROR, payload: data.error });
   }
 };
-export const tranferownership = (id, memberId) => async (dispatch) => {
+
+export const groupDetails = (id) => async (dispatch) => {
   try {
-    const { data } = await transferownershipofGroup(id, memberId);
+    const { data } = await getGroupDetails(id);
+    dispatch({ type: CURRENT_GROUP_DETAILS, payload: data });
     console.log(data);
-    // dispatch();
   } catch (error) {
     console.log(error);
   }

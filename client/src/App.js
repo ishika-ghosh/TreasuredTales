@@ -11,6 +11,7 @@ import GroupDetail from "./components/Pages/GroupDetail";
 
 function App() {
   const [isloading, setIsloading] = useState(true);
+  // const [loacation,setLocation]=useState(null);
 
   return (
     <>

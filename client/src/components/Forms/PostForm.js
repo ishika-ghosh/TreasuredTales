@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Box, Grid } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Input from "../common/Input";
-import FileBase from "react-file-base64";
 import { useDispatch } from "react-redux";
 
 const PostForm = ({
@@ -9,8 +9,9 @@ const PostForm = ({
   handleChange,
   handleClear,
   handleSubmit,
-  setPostData,
+  handleFile,
   currentId,
+  fileLoading,
 }) => {
   const dispatch = useDispatch();
   return (
@@ -41,25 +42,32 @@ const PostForm = ({
           />
         </Grid>
         <Grid item xs={12}>
-          <FileBase
+          {/* <FileBase
             type="file"
             multiple={false}
             id="file-button"
             onDone={(file) =>
               setPostData({ ...postData, selectedFile: file.base64 })
             }
-          />
+          /> */}
+          <input type="file" onChange={handleFile} />
         </Grid>
       </Grid>
 
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 1 }}
-        onClick={() => handleSubmit(postData, dispatch, currentId, handleClear)}
-      >
-        Submit
-      </Button>
+      {
+        <LoadingButton
+          fullWidth
+          variant="contained"
+          loading={fileLoading}
+          sx={{ mt: 3, mb: 1 }}
+          onClick={() =>
+            handleSubmit(postData, dispatch, currentId, handleClear)
+          }
+          disabled={fileLoading}
+        >
+          Submit
+        </LoadingButton>
+      }
       <Button
         type="clear"
         fullWidth

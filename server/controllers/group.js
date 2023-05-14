@@ -6,8 +6,8 @@ export const getAllGroups = async (req, res) => {
   try {
     const groups = await group
       .find({ $or: [{ creator: req.userId }, { members: req.userId }] })
-      .populate("members", ["name", "email"])
-      .populate("creator", "-password");
+      .select("name");
+
     res.status(200).json(groups);
   } catch (error) {
     console.log(error);
@@ -25,8 +25,7 @@ export const createGroup = async (req, res) => {
     });
     const createdGroup = await group
       .findOne({ _id: newGroup._id })
-      .populate("members", "-password")
-      .populate("creator", "-password");
+      .select("name");
     res.status(200).json(createdGroup);
   } catch (error) {
     console.log(error.message);
@@ -120,5 +119,23 @@ export const transferownershipofGroup = async (req, res) => {
     return res.status(200).json(updatedGroup);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getGroupDetails = async (req, res) => {
+  const { id: _id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).json("This is not a valid object id");
+  }
+  try {
+    const groupDetails = await group
+      .findById(_id)
+      .populate("members", "-password")
+      .populate("creator", "-password");
+
+    return res.status(200).json(groupDetails);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json("Something went wrong!!");
   }
 };
