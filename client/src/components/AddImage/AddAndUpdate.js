@@ -8,7 +8,7 @@ import { handleSubmit } from "./submit";
 import PostForm from "../Forms/PostForm";
 import axios from "axios";
 
-const AddAndUpdate = React.forwardRef((open, ref, loading) => {
+const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
 

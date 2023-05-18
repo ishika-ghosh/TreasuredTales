@@ -101,13 +101,21 @@ function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
                 </Button>
               )}
             </Box>
-            <MemberDetails member={groupDetails.creator} />
+            <MemberDetails
+              member={groupDetails.creator}
+              name={`${groupDetails.creator.name} (Admin)`}
+            />
             {groupDetails.members.map((member) => (
               <MemberDetails
                 key={member._id}
                 member={member}
                 show={isCreator}
                 handleKick={handleKick}
+                name={
+                  member._id === user.data._id
+                    ? `${member.name} (You)`
+                    : `${member.name}`
+                }
               />
             ))}
           </List>
@@ -134,7 +142,7 @@ function GroupDetails({ handleClose, groupDetails, handleExit, setRename }) {
 
 export default GroupDetails;
 
-const MemberDetails = ({ member, show, handleKick }) => {
+const MemberDetails = ({ member, show, handleKick, name }) => {
   const user = useSelector((state) => state.userAuth.authData);
   return (
     <ListItem alignItems="flex-start">
@@ -147,14 +155,7 @@ const MemberDetails = ({ member, show, handleKick }) => {
           {member.name[0]}
         </Avatar>
       </ListItemAvatar>
-      <ListItemText
-        primary={
-          member._id === user.data._id
-            ? `${member.name} (You)`
-            : `${member.name}`
-        }
-        secondary={<>{member.email}</>}
-      />
+      <ListItemText primary={name} secondary={<>{member.email}</>} />
       {show && (
         <>
           <Tooltip title="Kick the member" arrow>

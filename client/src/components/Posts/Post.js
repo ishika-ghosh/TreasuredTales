@@ -6,13 +6,13 @@ import { SET_SELECTED_POST } from "../../actions/action";
 import Option from "./Option";
 import "./style.css";
 
-export default function Post({ post }) {
+export default function Post({ post, loading, hasAccess }) {
   const { title, selectedFile, _id, message, tags, createdAt, lastEdited } =
     post;
   const dispatch = useDispatch();
   const clickedId = useSelector((state) => state.selectedId);
-  const loading = useSelector((state) => state.posts.loading);
   const currentId = useSelector((state) => state.selectedId);
+
   const handleFunction = (id) => {
     var _id = null;
     if (clickedId) {
@@ -49,10 +49,12 @@ export default function Post({ post }) {
               • Created {moment(createdAt).fromNow()}
             </p>
           </div>
-          <button className="info-button" onClick={() => handleFunction(_id)}>
-            <MoreVertIcon />
-          </button>
-          {clickedId === _id && <Option />}
+          {hasAccess && (
+            <button className="info-button" onClick={() => handleFunction(_id)}>
+              <MoreVertIcon />
+            </button>
+          )}
+          {clickedId === _id && hasAccess && <Option />}
         </>
       )}
     </div>

@@ -8,15 +8,16 @@ import AddPost from "../AddImage/AddPost";
 function Home({ isloading, setIsloading }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.authData);
+  const posts = useSelector((state) => state.posts.posts);
   useEffect(() => {
     if (user) {
       dispatch(fetchPosts(setIsloading));
     }
   }, [dispatch, user, setIsloading]);
   return (
-    <div>
+    <div style={{ marginTop: "80px" }}>
       <AddPost />
-      <Posts isloading={isloading} />
+      <Posts isloading={isloading} posts={posts} />
       <Share />
     </div>
   );

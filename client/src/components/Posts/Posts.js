@@ -9,10 +9,23 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import Post from "./Post";
-export default function Posts({ isloading }) {
+export default function Posts({ isloading, posts }) {
   const [width, setWidth] = useState(window.innerWidth);
-  const posts = useSelector((state) => state.posts.posts);
   const user = useSelector((state) => state.userAuth.authData);
+  const currentGroup = useSelector((state) => state.currentGroup.details);
+  const handleAccess = () => {
+    if (currentGroup) {
+      if (
+        currentGroup.access.includes(user.data._id) ||
+        currentGroup.creator._id === user.data._id
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  };
 
   useEffect(() => {
     window.addEventListener("resize", () => setWidth(window.innerWidth));
@@ -51,7 +64,7 @@ export default function Posts({ isloading }) {
       <ImageList variant="masonry" cols={setCols()} gap={5}>
         {posts.map((item) => (
           <ImageListItem key={item._id}>
-            <Post post={item} />
+            <Post post={item} loading={isloading} hasAccess={handleAccess()} />
           </ImageListItem>
         ))}
       </ImageList>
@@ -61,7 +74,6 @@ export default function Posts({ isloading }) {
 const styles = {
   width: "100%",
   height: "auto",
-  mt: "75px",
   position: "relative",
   paddingX: "20px",
 };

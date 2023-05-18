@@ -21,7 +21,7 @@ export const currentGroup = (
       return {
         ...state,
         posts: [...state.posts, action?.payload],
-        PostLoading: false,
+        postLoading: false,
       };
     case UPDATE_GROUP_POST:
       return {

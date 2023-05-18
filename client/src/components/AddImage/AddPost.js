@@ -12,6 +12,7 @@ export default function AddPost() {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.postModal);
   const loading = useSelector((state) => state.posts.loading);
+
   const handleOpen = () => {
     dispatch({ type: OPEN_POST_MODAL });
   };

@@ -79,7 +79,7 @@ export const deletePost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).json({ error: "Not a valid id" });
   const post = await postMessage.findById(_id);
-  if (post.creator !== req.user) {
+  if (post.creator !== req.userId) {
     return res
       .status(403)
       .json({ error: "You can not delete this post only creator can do this" });
