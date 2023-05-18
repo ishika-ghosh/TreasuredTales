@@ -3,15 +3,16 @@ import React from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { Avatar, Typography, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { handleSubmit } from "./submit";
 import { SET_SELECTED_POST } from "../../actions/action";
+import { handleSubmit } from "./submit";
 import PostForm from "../Forms/PostForm";
 import axios from "axios";
 
-const AddAndUpdate = React.forwardRef((open, ref) => {
+const AddAndUpdate = React.forwardRef((open, ref, loading) => {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
-  const loading = useSelector((state) => state.posts.loading);
+
+  const currentGroupId = useSelector((state) => state.selectedGroup);
   const post = useSelector((state) =>
     currentId ? state.posts.posts.find((post) => post._id === currentId) : null
   );
@@ -81,6 +82,7 @@ const AddAndUpdate = React.forwardRef((open, ref) => {
           handleFile={handleFile}
           currentId={currentId}
           fileLoading={fileLoading}
+          currentGroupId={currentGroupId}
         />
       )}
     </>

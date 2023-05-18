@@ -8,3 +8,10 @@ export const updatePost = (id, updatedPost) =>
 export const deletePost = (id) => API.delete(`${URL}/${id}`);
 export const sharePost = (id, shareData) =>
   API.patch(`${URL}/share/${id}`, shareData);
+export const getGroupPost = (id) => API.get(`${URL}?groupid=${id}`);
+export const createGroupPost = (groupId, postData) =>
+  API.post(`${URL}?groupid=${groupId}`, postData);
+export const updateGroupPost = (postId, updatedPostData) =>
+  API.patch(`${URL}/${postId}`, updatedPostData);
+export const deleteGroupPost = (groupId, postId) =>
+  API.delete(`${URL}/${postId}?groupid=${groupId}`);

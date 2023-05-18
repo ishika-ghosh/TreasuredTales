@@ -12,6 +12,7 @@ const PostForm = ({
   handleFile,
   currentId,
   fileLoading,
+  currentGroupId,
 }) => {
   const dispatch = useDispatch();
   return (
@@ -61,7 +62,13 @@ const PostForm = ({
           loading={fileLoading}
           sx={{ mt: 3, mb: 1 }}
           onClick={() =>
-            handleSubmit(postData, dispatch, currentId, handleClear)
+            handleSubmit(
+              postData,
+              dispatch,
+              currentId,
+              handleClear,
+              currentGroupId
+            )
           }
           disabled={fileLoading}
         >

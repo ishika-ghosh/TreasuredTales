@@ -11,6 +11,7 @@ import {
 export default function AddPost() {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.postModal);
+  const loading = useSelector((state) => state.posts.loading);
   const handleOpen = () => {
     dispatch({ type: OPEN_POST_MODAL });
   };
@@ -22,7 +23,7 @@ export default function AddPost() {
     <>
       <AddButton title={"ADD NEW"} handleOpen={handleOpen} />
       <CommonModal open={open} handleClose={handleClose}>
-        <AddAndUpdate open={open} />
+        <AddAndUpdate open={open} loading={loading} />
       </CommonModal>
     </>
   );

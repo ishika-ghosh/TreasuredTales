@@ -7,12 +7,19 @@ export const getPosts = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(q)) {
       return res.status(404).json("Not a valid id");
     }
-    const posts = await postMessage.find({ $in: { groups: q } });
-    return res.status(200).json(posts);
+    try {
+      const posts = await postMessage.find({ groups: q });
+      return res.status(200).json(posts);
+    } catch (error) {
+      console.log(error);
+    }
   } else {
     try {
       console.log("in server");
-      const posts = await postMessage.find({ creator: req.userId });
+      const posts = await postMessage.find({
+        creator: req.userId,
+        groups: [],
+      });
       res.status(200).json(posts);
     } catch (error) {
       console.log(error);
@@ -21,12 +28,23 @@ export const getPosts = async (req, res) => {
 };
 export const createPost = async (req, res) => {
   const post = req.body;
+  const { groupid: q } = req.query;
+  let newPost;
+  if (q) {
+    newPost = new postMessage({
+      ...post,
+      groups: [q],
+      creator: req.userId,
+      createdAt: new Date().toISOString(),
+    });
+  } else {
+    newPost = new postMessage({
+      ...post,
+      creator: req.userId,
+      createdAt: new Date().toISOString(),
+    });
+  }
 
-  const newPost = new postMessage({
-    ...post,
-    creator: req.userId,
-    createdAt: new Date().toISOString(),
-  });
   try {
     console.log(newPost);
     await newPost.save();
@@ -57,14 +75,32 @@ export const updatePost = async (req, res) => {
 };
 export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
+  const { groupid: q } = req.query;
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).json({ error: "Not a valid id" });
+  const post = await postMessage.findById(_id);
+  if (post.creator !== req.user) {
+    return res
+      .status(403)
+      .json({ error: "You can not delete this post only creator can do this" });
+  }
   try {
-    const post = await postMessage.findById(_id);
-    if (post.creator === req.userId) {
+    if (q) {
+      if (post.groups.length > 0) {
+        await postMessage.findByIdAndUpdate(
+          _id,
+          { $pull: { groups: q } },
+          { new: true }
+        );
+        return res.status(200).json("Memory removed successfully");
+      } else {
+        await postMessage.findByIdAndDelete(_id);
+        res.json({ message: "the data is successfully deleted" });
+      }
+    } else {
       await postMessage.deleteOne({ _id: _id });
+      res.json({ message: "the data is successfully deleted" });
     }
-    res.json({ message: "the data is successfully deleted" });
   } catch (error) {
     console.log(error);
   }
@@ -87,25 +123,19 @@ export const sharePost = async (req, res) => {
         .send({ error: "Only creator can share this resource" });
     }
     if (shareData.access === 1) {
-      let list = post.editors;
-      //check if the user is already in list
-      list.push(existingUser?._id);
-      console.log(list);
       const updatedPost = await postMessage.findByIdAndUpdate(
         _id,
-        { editors: list },
+        { $push: { editors: existingUser?._id } },
         { new: true }
       );
-      res.json(updatedPost);
+      return res.status(200).json(updatedPost);
     } else {
-      let list = post.viewers;
-      list.push(existingUser?._id);
       const updatedPost = await postMessage.findByIdAndUpdate(
         _id,
-        { viewers: list },
+        { $push: { viewers: existingUser?._id } },
         { new: true }
       );
-      res.json(updatedPost);
+      return res.status(200).json(updatedPost);
     }
   } catch (err) {
     console.log(err);
