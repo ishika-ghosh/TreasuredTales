@@ -51,7 +51,19 @@ function GroupDetail() {
         hideBackdrop={true}
       >
         {loading ? (
-          <CircularProgress />
+          <div
+            style={{
+              marginTop: "70px",
+              width: 400,
+              padding: 10,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "300px",
+            }}
+          >
+            <CircularProgress />
+          </div>
         ) : (
           <GroupDetails
             handleClose={() => toggleDrawer(false)}

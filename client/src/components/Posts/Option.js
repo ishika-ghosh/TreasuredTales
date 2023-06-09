@@ -1,7 +1,8 @@
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMemory } from "../../actions/posts";
+import { deleteGroupMemory, deleteMemory } from "../../actions/posts";
 import {
+  GROUP_POST_LOADING,
   LOADING,
   OPEN_POST_MODAL,
   OPEN_SHARE_MODAL,
@@ -18,8 +19,13 @@ function Option() {
     dispatch({ type: OPEN_POST_MODAL });
   };
   const handleDelete = () => {
-    dispatch({ type: LOADING });
-    dispatch(deleteMemory(currentId));
+    if (currentGroupId) {
+      dispatch({ type: GROUP_POST_LOADING });
+      dispatch(deleteGroupMemory(currentId, currentGroupId));
+    } else {
+      dispatch({ type: LOADING });
+      dispatch(deleteMemory(currentId));
+    }
   };
   const handleShare = () => {
     dispatch({ type: OPEN_SHARE_MODAL });

@@ -1,4 +1,12 @@
-import { getAllGroups, createGroup, getGroupDetails } from "../api/group";
+import {
+  getAllGroups,
+  createGroup,
+  getGroupDetails,
+  removefromGroup,
+  deleteGroup,
+  renameGroup,
+  addtoGroup,
+} from "../api/group";
 import {
   CLOSE_GROUP_MODAL,
   CREATE_GROUP,
@@ -7,6 +15,8 @@ import {
   SUCCESS,
   GROUP_ERROR,
   CURRENT_GROUP_DETAILS,
+  CURRENT_GROUP_LOADING,
+  DELETE_GROUP,
 } from "./action";
 
 export const fetchAllGroups = (setIsloading) => async (dispatch) => {
@@ -44,4 +54,48 @@ export const groupDetails = (id) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+export const exitGroup = (id, memberId) => async (dispatch) => {
+  try {
+    const { data } = await removefromGroup(id, memberId);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const kickFromGroup = (id, memberId) => async (dispatch) => {
+  try {
+    dispatch({ type: CURRENT_GROUP_LOADING });
+    const { data } = await removefromGroup(id, memberId);
+    console.log(data);
+    dispatch({ type: CURRENT_GROUP_DETAILS, payload: data });
+    dispatch({ type: SUCCESS, payload: "member has been kicked successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteGroupWithAllMemories = (id) => async (dispatch) => {
+  try {
+    await deleteGroup(id);
+    dispatch({ type: DELETE_GROUP, payload: id });
+    dispatch({ type: SUCCESS, payload: "Group deleted successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const groupRename = (id, name) => async (dispatch) => {
+  try {
+    dispatch({ type: CURRENT_GROUP_LOADING });
+    const { data } = await renameGroup(id, name);
+    dispatch({ type: CURRENT_GROUP_DETAILS, payload: data });
+    dispatch({ type: SUCCESS, payload: "Group renamed successfully" });
+  } catch (error) {}
+};
+export const addMembers = (id, member) => async (dispatch) => {
+  try {
+    dispatch({ type: CURRENT_GROUP_LOADING });
+    const { data } = await addtoGroup(id, member);
+    dispatch({ type: CURRENT_GROUP_DETAILS, payload: data });
+    dispatch({ type: SUCCESS, payload: "Member added successfully" });
+  } catch (error) {}
 };

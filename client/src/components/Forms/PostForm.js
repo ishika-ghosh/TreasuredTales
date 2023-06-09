@@ -51,7 +51,7 @@ const PostForm = ({
               setPostData({ ...postData, selectedFile: file.base64 })
             }
           /> */}
-          <input type="file" onChange={handleFile} />
+          <input type="file" accept="image/*" onChange={handleFile} />
         </Grid>
       </Grid>
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import group from "../models/group.js";
 import User from "./../models/user.js";
+import postMessage from "./../models/posts.js";
 
 export const getAllGroups = async (req, res) => {
   try {
@@ -17,7 +18,6 @@ export const createGroup = async (req, res) => {
   const groupdetails = req.body;
   try {
     const admin = await User.findOne({ _id: req.userId });
-    console.log(admin);
     const newGroup = await group.create({
       ...groupdetails,
       creator: admin,
@@ -33,14 +33,28 @@ export const createGroup = async (req, res) => {
 };
 export const deleteGroup = async (req, res) => {
   const { id: _id } = req.params;
+  console.log(_id);
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).json({ error: "Not a valid id" });
   try {
     const g = await group.findById(_id);
-    if (g.creator === req.userId) {
+    if (mongoose.Types.ObjectId(g.creator).equals(req.userId)) {
+      console.log("here");
+      const posts = await postMessage.find({ groups: _id });
+      for (const post of posts) {
+        if (post.groups.length === 1) {
+          await postMessage.deleteOne({ _id: post._id });
+          console.log(`Post ${post._id} deleted successfully`);
+        } else {
+          const p = await postMessage.findByIdAndUpdate(post._id, {
+            $pull: { groups: _id },
+          });
+          console.log(p);
+        }
+      }
       await group.deleteOne({ _id: _id });
     }
-    res.json({ message: "the data is successfully deleted" });
+    res.json({ message: "the group deleted is successfully deleted" });
   } catch (error) {
     console.log(error);
   }
@@ -49,11 +63,11 @@ export const renameGroup = async (req, res) => {
   const { id: _id } = req.params;
   const { newName } = req.body;
   try {
-    const renamedGroup = await group
+    const renamed = await group
       .findByIdAndUpdate(_id, { name: newName }, { new: true })
       .populate("members", "-password")
       .populate("creator", "-password");
-    return res.status(200).json(renamedGroup);
+    return res.status(200).json(renamed);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -83,7 +97,7 @@ export const removefromGroup = async (req, res) => {
   const { id: _id } = req.params;
   const { memberId } = req.body;
   try {
-    const added = await group
+    const removed = await group
       .findByIdAndUpdate(
         _id,
         {
@@ -93,7 +107,7 @@ export const removefromGroup = async (req, res) => {
       )
       .populate("members", "-password")
       .populate("creator", "-password");
-    return res.status(200).json(added);
+    return res.status(200).json(removed);
   } catch (error) {
     console.log(error);
     return res.status(404).error("chat not found");

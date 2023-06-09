@@ -8,15 +8,17 @@ import SharedWithMe from "./components/Pages/SharedWithMe";
 import SnackBar from "./components/common/SnackBar";
 import "./App.css";
 import GroupDetail from "./components/Pages/GroupDetail";
+import Profile from "./components/common/Profile";
 
 function App() {
   const [isloading, setIsloading] = useState(true);
   // const [loacation,setLocation]=useState(null);
+  const [profile, setProfile] = useState(false);
 
   return (
     <>
       <BrowserRouter>
-        <Navbar />
+        <Navbar setProfile={() => setProfile(true)} />
         <Routes>
           <Route
             exact
@@ -34,6 +36,7 @@ function App() {
           <Route exact path="/groups/:id" element={<GroupDetail />} />
         </Routes>
         <SnackBar />
+        <Profile open={profile} handleProfile={() => setProfile(false)} />
       </BrowserRouter>
     </>
   );

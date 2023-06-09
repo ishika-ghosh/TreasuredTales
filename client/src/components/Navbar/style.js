@@ -51,4 +51,4 @@ export const pages = [
     name: "Groups",
   },
 ];
-export const settings = ["Profile", "Account", "Logout"];
+export const settings = ["Profile", "Logout"];

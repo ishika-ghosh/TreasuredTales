@@ -1,58 +1,19 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Alert, Box, Button, Grid, List, Chip } from "@mui/material";
-import { createNewGroup } from "../../actions/groups";
-import { GROUP_LOADING } from "../../actions/action";
-import { API } from "../../api";
 import Input from "../common/Input";
 import UserList from "../common/UserList";
 
-function GroupForm() {
-  const err = useSelector((state) => state.group.error);
-  const dispatch = useDispatch();
-  const [groupData, setGroupData] = useState({
-    name: "",
-    members: [],
-  });
-  const [options, setOptions] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [loading, setIsloading] = useState(false);
-  useEffect(() => {
-    const func = async () => {
-      setIsloading(true);
-      const { data } = await API.get(`/search/members?q=${inputValue}`);
-      setOptions(data);
-      setIsloading(false);
-    };
-    if (inputValue === "") {
-      return;
-    }
-    try {
-      console.log(inputValue);
-      func();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [inputValue]);
-
-  const handleMembers = (user) => {
-    if (groupData.members.includes(user)) {
-      return;
-    }
-    setGroupData({ ...groupData, members: [...groupData.members, user] });
-    setInputValue("");
-  };
-  const handleDelete = (member) => {
-    setGroupData({
-      ...groupData,
-      members: groupData.members.filter((m) => m._id !== member._id),
-    });
-  };
-  const handleSubmit = () => {
-    console.log(groupData);
-    dispatch({ type: GROUP_LOADING });
-    dispatch(createNewGroup(groupData));
-  };
+function GroupForm({
+  error,
+  groupData,
+  handleMembers,
+  handleDelete,
+  handleSubmit,
+  handleChange,
+  inputValue,
+  options,
+  loading,
+  handleInputValue,
+}) {
   return (
     <Box sx={{ mt: 1 }}>
       <Grid container spacing={2}>
@@ -61,9 +22,7 @@ function GroupForm() {
             label="Group Name"
             name="name"
             value={groupData.name}
-            handleChange={(e) =>
-              setGroupData({ ...groupData, name: e.target.value })
-            }
+            handleChange={(e) => handleChange(e)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -95,7 +54,7 @@ function GroupForm() {
             label="Add members to this group"
             name="members"
             value={inputValue}
-            handleChange={(e) => setInputValue(e.target.value)}
+            handleChange={(e) => handleInputValue(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -129,7 +88,7 @@ function GroupForm() {
           </>
         </Grid>
         <Grid item xs={12}>
-          {err && <Alert security="error">{err}</Alert>}
+          {error && <Alert security="error">{error}</Alert>}
         </Grid>
 
         <Grid item xs={12}>
@@ -137,7 +96,7 @@ function GroupForm() {
             fullWidth
             variant="contained"
             onClick={handleSubmit}
-            disabled={err !== null}
+            disabled={error !== null}
           >
             Create Group
           </Button>

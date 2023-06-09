@@ -11,10 +11,15 @@ import axios from "axios";
 const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
-
   const currentGroupId = useSelector((state) => state.selectedGroup);
   const post = useSelector((state) =>
-    currentId ? state.posts.posts.find((post) => post._id === currentId) : null
+    currentGroupId
+      ? currentId
+        ? state.currentGroup.posts.find((post) => post._id === currentId)
+        : null
+      : currentId
+      ? state.posts.posts.find((post) => post._id === currentId)
+      : null
   );
   const [postData, setPostData] = useState({
     title: "",

@@ -23,9 +23,10 @@ function GroupPosts() {
     dispatch({ type: CLOSE_POST_MODAL });
     dispatch({ type: CLEAR_SELECTED_POST });
   };
+  console.log(group);
   return (
     <div>
-      {
+      {group?.creator?._id === user.data?._id && (
         <Button
           variant="contained"
           startIcon={<AddAPhotoIcon />}
@@ -37,11 +38,10 @@ function GroupPosts() {
             zIndex: 100,
           }}
           onClick={handleModal}
-          disabled={group.creator._id !== user.data._id}
         >
           Add Photo
         </Button>
-      }
+      )}
       <CommonModal open={modalState} handleClose={handleClose}>
         <AddAndUpdate open={modalState} loading={loading} />
       </CommonModal>

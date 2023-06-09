@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { styles, pages, settings } from "./style";
 
-function Navbar() {
+function Navbar({ setProfile }) {
   const user = useSelector((state) => state.userAuth.authData);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -50,6 +50,9 @@ function Navbar() {
     if (s === "Logout") {
       dispatch({ type: "LOGOUT" });
       navigate("/auth");
+    }
+    if (s === "Profile") {
+      setProfile();
     }
     setAnchorElUser(null);
   };
