@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ShareIcon from "@mui/icons-material/Share";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, CircularProgress, Typography } from "@mui/material";
 import ShareForm from "../Forms/ShareForm";
-import {
-  CLEAR_SELECTED_POST,
-  CLOSE_SHARE_MODAL,
-  REMOVE_SHARE_ERROR,
-} from "./../../actions/action";
-import { shareMemory } from "./../../actions/posts";
+import { CLEAR_SELECTED_POST, CLOSE_SHARE_MODAL } from "./../../actions/action";
+
 import CommonModal from "../common/CommonModal";
+import { shareMemory } from "../../actions/posts";
 
 function Share() {
   const [shareData, setShareData] = useState({
@@ -20,11 +17,9 @@ function Share() {
   const share = useSelector((state) => state.modal.shareModal);
   const currentId = useSelector((state) => state.selectedId);
   const exception = useSelector((state) => state.posts.error);
+  const shareLoading = useSelector((state) => state.posts.shareLoading);
 
   const handleChange = (e) => {
-    if (exception) {
-      dispatch({ type: REMOVE_SHARE_ERROR });
-    }
     setShareData({ ...shareData, [e.target.name]: e.target.value });
   };
   const handleShare = () => {
@@ -49,12 +44,16 @@ function Share() {
       >
         Share memories with your friends
       </Typography>
-      <ShareForm
-        handleChange={handleChange}
-        shareData={shareData}
-        handleShare={handleShare}
-        error={exception}
-      />
+      {shareLoading ? (
+        <CircularProgress />
+      ) : (
+        <ShareForm
+          handleChange={handleChange}
+          shareData={shareData}
+          handleShare={handleShare}
+          error={exception}
+        />
+      )}
     </CommonModal>
   );
 }

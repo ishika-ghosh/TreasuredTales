@@ -3,6 +3,7 @@ import {
   createMemory,
   addGroupPost,
   updateGroupMemory,
+  updateSharedMemory,
 } from "../../actions/posts";
 import {
   LOADING,
@@ -15,7 +16,8 @@ export const handleSubmit = (
   dispatch,
   currentId,
   handleClear,
-  currentGroupId
+  currentGroupId,
+  selectedSharedPost
 ) => {
   const { title, message, selectedFile } = postData;
   if (title === "" || message === "" || selectedFile === "") {
@@ -33,7 +35,11 @@ export const handleSubmit = (
     } else {
       dispatch({ type: LOADING });
       if (currentId) {
-        dispatch(updateMemory(currentId, postData));
+        if (selectedSharedPost) {
+          dispatch(updateSharedMemory(currentId, postData));
+        } else {
+          dispatch(updateMemory(currentId, postData));
+        }
         handleClear();
       } else {
         dispatch(createMemory(postData));

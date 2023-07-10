@@ -16,6 +16,7 @@ function GroupPosts() {
   const groupPosts = useSelector((state) => state.currentGroup.posts);
   const group = useSelector((state) => state.currentGroup.details);
   const user = useSelector((state) => state.userAuth.authData);
+
   const handleModal = () => {
     dispatch({ type: OPEN_POST_MODAL });
   };
@@ -23,7 +24,7 @@ function GroupPosts() {
     dispatch({ type: CLOSE_POST_MODAL });
     dispatch({ type: CLEAR_SELECTED_POST });
   };
-  console.log(group);
+
   return (
     <div>
       {group?.creator?._id === user.data?._id && (

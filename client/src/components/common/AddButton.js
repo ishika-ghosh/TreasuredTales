@@ -12,7 +12,7 @@ function AddButton({ title, handleOpen }) {
       sx={{
         mt: "80px",
         position: "fixed",
-        top: { xs: "50px", md: "20px" },
+        top: "20px",
         right: "20px",
         zIndex: "100",
         padding: "10px",

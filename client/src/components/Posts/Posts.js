@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import Post from "./Post";
-export default function Posts({ isloading, posts }) {
+export default function Posts({ isloading, posts, sharedPosts, GroupPosts }) {
   const [width, setWidth] = useState(window.innerWidth);
   const user = useSelector((state) => state.userAuth.authData);
   const currentGroup = useSelector((state) => state.currentGroup.details);
@@ -40,6 +40,9 @@ export default function Posts({ isloading, posts }) {
     } else if (width < 700) {
       return 1;
     } else {
+      if (sharedPosts) {
+        return 3;
+      }
       return 4;
     }
   };
@@ -62,9 +65,14 @@ export default function Posts({ isloading, posts }) {
   ) : (
     <Box sx={styles}>
       <ImageList variant="masonry" cols={setCols()} gap={5}>
-        {posts.map((item) => (
+        {posts?.map((item) => (
           <ImageListItem key={item._id}>
-            <Post post={item} loading={isloading} hasAccess={handleAccess()} />
+            <Post
+              post={item}
+              loading={isloading}
+              hasAccess={handleAccess()}
+              sharedPost={sharedPosts}
+            />
           </ImageListItem>
         ))}
       </ImageList>

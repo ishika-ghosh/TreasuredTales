@@ -1,13 +1,14 @@
+import { handleLikePost } from "../api/sharePost";
 import {
   getPosts,
   createPost,
   updatePost,
   deletePost,
-  sharePost,
   getGroupPost,
   createGroupPost,
   updateGroupPost,
   deleteGroupPost,
+  sharePost,
 } from "./../api/Post";
 import {
   FETCH_ALL,
@@ -17,13 +18,19 @@ import {
   LOGOUT,
   SUCCESS,
   CLEAR_SELECTED_POST,
-  SHARE_POST_ERROR,
   CLOSE_POST_MODAL,
   GET_GROUP_POSTS,
   CREATE_GROUP_POST,
   UPDATE_GROUP_POST,
   DELETE_GROUP_POST,
+  SHARE_POST_LOADING,
+  SHARE_POST,
+  CLOSE_SHARE_MODAL,
+  ERROR,
+  UPDATE_SHARED_POST,
+  REMOVE_FROM_SHARED_POST,
 } from "./action";
+//Individual post
 
 export const fetchPosts = (setIsloading) => async (dispatch) => {
   try {
@@ -62,10 +69,14 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     dispatch({ type: LOGOUT });
   }
 };
-export const deleteMemory = (id) => async (dispatch) => {
+export const deleteMemory = (id, sharedPost) => async (dispatch) => {
   try {
     await deletePost(id);
-    dispatch({ type: DELETE, payload: id });
+    if (sharedPost) {
+      dispatch({ type: REMOVE_FROM_SHARED_POST, payload: id });
+    } else {
+      dispatch({ type: DELETE, payload: id });
+    }
     dispatch({ type: CLEAR_SELECTED_POST });
     dispatch({ type: SUCCESS, payload: "Memory deleted successfully" });
   } catch (error) {
@@ -75,20 +86,44 @@ export const deleteMemory = (id) => async (dispatch) => {
 };
 export const shareMemory = (id, shareData) => async (dispatch) => {
   try {
+    dispatch({ type: SHARE_POST_LOADING });
     const { data } = await sharePost(id, shareData);
     console.log(data);
-    dispatch({ type: UPDATE_POST, payload: data });
+    dispatch({ type: SHARE_POST, payload: data });
     dispatch({ type: CLEAR_SELECTED_POST });
+    dispatch({ type: CLOSE_SHARE_MODAL });
+    dispatch({ type: SUCCESS, payload: "Memory shared successfully" });
+  } catch (error) {
+    console.log(error);
     dispatch({
-      type: SUCCESS,
-      payload: "Your memory has been successfully shared",
+      type: ERROR,
+      payload: "Something went wrong please try again later",
     });
-  } catch (err) {
-    const { response } = err;
-    console.log(err);
-    dispatch({ type: SHARE_POST_ERROR, payload: response.data.error });
   }
 };
+export const handleSharedPost = (id) => async (dispatch) => {
+  try {
+    const { data } = await handleLikePost(id);
+    console.log(data);
+    dispatch({ type: UPDATE_SHARED_POST, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updateSharedMemory = (id, updatedPost) => async (dispatch) => {
+  try {
+    const { data } = await updatePost(id, updatedPost);
+    console.log(data);
+    dispatch({ type: UPDATE_SHARED_POST, payload: data });
+    dispatch({ type: CLEAR_SELECTED_POST });
+    dispatch({ type: CLOSE_POST_MODAL });
+    dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+//group post CRUD
+
 export const getAllGroupPosts = (id) => async (dispatch) => {
   try {
     const { data } = await getGroupPost(id);

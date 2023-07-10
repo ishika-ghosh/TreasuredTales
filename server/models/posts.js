@@ -4,18 +4,21 @@ const postSchema = mongoose.Schema({
   title: String,
   message: String,
   tags: [String],
-  creator: String,
   selectedFile: String,
-  lastEdited: { type: Date, default: null },
+  creator: String,
+  editDetails: {
+    editedAt: { type: Date, default: null },
+    editedBy: { type: mongoose.SchemaTypes.ObjectId, ref: "user" },
+  },
   createdAt: {
     type: Date,
     default: new Date(),
   },
-  likecount: Number,
-  likedBy: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
-  viewers: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
-  editors: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
   groups: [{ type: mongoose.SchemaTypes.ObjectId, ref: "groups" }],
+  likedBy: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
+  addToFavouriteBy: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
+  editor: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
+  viewer: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
 });
 
 const postMessage = mongoose.model("postMessage", postSchema);

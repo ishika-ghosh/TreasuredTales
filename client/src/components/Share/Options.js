@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   ListSubheader,
   List,
@@ -15,8 +16,15 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
+import { GET_ALL_FAVORITES } from "../../actions/action";
+import {
+  fetchAllEditorAccess,
+  fetchAllMemory,
+  fetchAllViewersAccess,
+} from "../../actions/sharePosts";
 
-export default function Options() {
+export default function Options({ setCurrentPosts }) {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
   const [option, setOption] = useState("ALL");
   const [listOpen, setListOpen] = useState(true);
@@ -27,11 +35,28 @@ export default function Options() {
   const handleChange = (name) => {
     handleClick();
     setOption(name);
+    setCurrentPosts(name);
+    if (name === "ALL") {
+      dispatch(fetchAllMemory());
+    } else if (name === "Editing Access") {
+      dispatch(fetchAllEditorAccess());
+    } else {
+      dispatch(fetchAllViewersAccess());
+    }
+  };
+  const handleFavourite = () => {
+    setCurrentPosts("Favourites");
+    dispatch({ type: GET_ALL_FAVORITES });
   };
 
   return (
     <List
-      sx={{ width: "100%", marginTop: 8, bgcolor: "background.paper" }}
+      sx={{
+        width: "100%",
+        marginTop: 8,
+        bgcolor: "background.paper",
+        paddingTop: "0px",
+      }}
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
@@ -54,7 +79,7 @@ export default function Options() {
       }
     >
       <Collapse in={listOpen} timeout="auto">
-        <ListItemButton>
+        <ListItemButton onClick={handleFavourite}>
           <ListItemIcon>
             <FavoriteBorderIcon />
           </ListItemIcon>
@@ -83,21 +108,21 @@ export default function Options() {
 
             <ListItemButton
               sx={{ pl: 4 }}
-              onClick={() => handleChange("Editor Access")}
+              onClick={() => handleChange("Editing Access")}
             >
               <ListItemIcon>
                 <EditIcon />
               </ListItemIcon>
-              <ListItemText primary="Editor Access" />
+              <ListItemText primary="Editing Access" />
             </ListItemButton>
             <ListItemButton
               sx={{ pl: 4 }}
-              onClick={() => handleChange("Viewer Access")}
+              onClick={() => handleChange("Viewing Access")}
             >
               <ListItemIcon>
                 <VisibilityIcon />
               </ListItemIcon>
-              <ListItemText primary="Viewer Access" />
+              <ListItemText primary="Viewing Access" />
             </ListItemButton>
           </List>
         </Collapse>

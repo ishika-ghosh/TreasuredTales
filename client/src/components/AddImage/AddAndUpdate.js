@@ -3,7 +3,11 @@ import React from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { Avatar, Typography, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_SELECTED_POST } from "../../actions/action";
+import {
+  CLOSE_POST_MODAL,
+  ERROR,
+  SET_SELECTED_POST,
+} from "../../actions/action";
 import { handleSubmit } from "./submit";
 import PostForm from "../Forms/PostForm";
 import axios from "axios";
@@ -12,10 +16,17 @@ const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
   const currentGroupId = useSelector((state) => state.selectedGroup);
+  const selectedSharedPost = useSelector(
+    (state) => state.sharedPosts.selectedSharedPost
+  );
   const post = useSelector((state) =>
     currentGroupId
       ? currentId
         ? state.currentGroup.posts.find((post) => post._id === currentId)
+        : null
+      : selectedSharedPost
+      ? currentId
+        ? state.sharedPosts.posts.find((post) => post._id === currentId)
         : null
       : currentId
       ? state.posts.posts.find((post) => post._id === currentId)
@@ -61,10 +72,15 @@ const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
           upload_preset: "trasuredTales",
         })
         .then((res) => {
+          console.log(res);
           setPostData({ ...postData, selectedFile: res.data.url });
           setFileLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          dispatch({ type: ERROR, message: "something went wrong" });
+          dispatch({ type: CLOSE_POST_MODAL });
+        });
     };
   };
   return (
@@ -88,6 +104,7 @@ const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
           currentId={currentId}
           fileLoading={fileLoading}
           currentGroupId={currentGroupId}
+          selectedSharedPost={selectedSharedPost}
         />
       )}
     </>

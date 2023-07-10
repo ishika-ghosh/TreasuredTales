@@ -7,7 +7,6 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Alert,
 } from "@mui/material";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import ShareIcon from "@mui/icons-material/Share";
@@ -15,7 +14,7 @@ import Input from "../common/Input";
 import React from "react";
 import { grey } from "@mui/material/colors";
 
-function ShareForm({ shareData, handleChange, handleShare, error }) {
+function ShareForm({ shareData, handleChange, handleShare }) {
   return (
     <Box sx={{ mt: 1 }}>
       <Grid container spacing={2}>
@@ -56,18 +55,12 @@ function ShareForm({ shareData, handleChange, handleShare, error }) {
           </Box>
         </Grid>
       </Grid>
-      {error && (
-        <Alert severity="error" sx={{ mt: 1 }}>
-          {error}
-        </Alert>
-      )}
 
       <Button
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 1 }}
         onClick={() => handleShare()}
-        disabled={error !== null}
       >
         <ShareIcon /> Share
       </Button>

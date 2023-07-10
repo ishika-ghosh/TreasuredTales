@@ -13,6 +13,7 @@ const PostForm = ({
   currentId,
   fileLoading,
   currentGroupId,
+  selectedSharedPost,
 }) => {
   const dispatch = useDispatch();
   return (
@@ -42,17 +43,11 @@ const PostForm = ({
             handleChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12}>
-          {/* <FileBase
-            type="file"
-            multiple={false}
-            id="file-button"
-            onDone={(file) =>
-              setPostData({ ...postData, selectedFile: file.base64 })
-            }
-          /> */}
-          <input type="file" accept="image/*" onChange={handleFile} />
-        </Grid>
+        {!currentId && (
+          <Grid item xs={12}>
+            <input type="file" accept="image/*" onChange={handleFile} />
+          </Grid>
+        )}
       </Grid>
 
       {
@@ -67,7 +62,8 @@ const PostForm = ({
               dispatch,
               currentId,
               handleClear,
-              currentGroupId
+              currentGroupId,
+              selectedSharedPost
             )
           }
           disabled={fileLoading}

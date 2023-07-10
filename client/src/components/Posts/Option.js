@@ -6,17 +6,22 @@ import {
   LOADING,
   OPEN_POST_MODAL,
   OPEN_SHARE_MODAL,
+  SET_SELECTED_SHARED_POST,
 } from "../../actions/action";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import { Divider } from "@mui/material";
-function Option() {
+function Option({ sharedPost, editor }) {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
   const currentGroupId = useSelector((state) => state.selectedGroup);
+  const userId = useSelector((state) => state.userAuth.authData.data._id);
   const handleUpdate = () => {
     dispatch({ type: OPEN_POST_MODAL });
+    if (sharedPost) {
+      dispatch({ type: SET_SELECTED_SHARED_POST });
+    }
   };
   const handleDelete = () => {
     if (currentGroupId) {
@@ -24,7 +29,7 @@ function Option() {
       dispatch(deleteGroupMemory(currentId, currentGroupId));
     } else {
       dispatch({ type: LOADING });
-      dispatch(deleteMemory(currentId));
+      dispatch(deleteMemory(currentId, sharedPost));
     }
   };
   const handleShare = () => {
@@ -33,16 +38,18 @@ function Option() {
   return (
     <div className="option-div">
       <ul style={{ listStyle: "none" }}>
-        <li>
-          <button className="button" onClick={handleUpdate}>
-            <EditIcon />
-            <span style={{ marginRight: "10px", textAlign: "right" }}>
-              Edit
-            </span>
-          </button>
-        </li>
+        {editor.includes(userId) && (
+          <li>
+            <button className="button" onClick={handleUpdate}>
+              <EditIcon />
+              <span style={{ marginRight: "10px", textAlign: "right" }}>
+                Edit
+              </span>
+            </button>
+          </li>
+        )}
         <Divider />
-        {!currentGroupId && (
+        {!currentGroupId && !sharedPost && (
           <>
             <li>
               <button className="button" onClick={handleShare}>
@@ -56,7 +63,11 @@ function Option() {
           <li>
             <button className="button" onClick={handleDelete}>
               <DeleteIcon />
-              {currentGroupId ? <span>Remove</span> : <span>Delete</span>}
+              {currentGroupId || sharedPost ? (
+                <span>Remove</span>
+              ) : (
+                <span>Delete</span>
+              )}
             </button>
           </li>
         }

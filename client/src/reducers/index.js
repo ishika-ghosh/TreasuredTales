@@ -7,6 +7,7 @@ import { snackbarState } from "./snackbar";
 import { group } from "./group";
 import { selectedGroup } from "./selectedGroup";
 import { currentGroup } from "./groupDetails";
+import { sharedPosts } from "./share";
 
 export default combineReducers({
   posts,
@@ -17,4 +18,5 @@ export default combineReducers({
   group,
   selectedGroup,
   currentGroup,
+  sharedPosts,
 });

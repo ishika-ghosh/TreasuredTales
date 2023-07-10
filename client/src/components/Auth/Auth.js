@@ -9,9 +9,8 @@ import {
   Typography,
   Container,
   Box,
-  Alert,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../Forms/AuthForm";
 import { signin, signup } from "../../actions/auth";
@@ -26,7 +25,6 @@ const initialState = {
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState(initialState);
-  const exception = useSelector((state) => state.userAuth.error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -58,11 +56,6 @@ export default function Auth() {
             formData={formData}
             handleChange={handleChange}
           />
-          {exception && (
-            <Alert severity="error" sx={{ mt: 1 }}>
-              {exception}
-            </Alert>
-          )}
           <Button
             type="submit"
             fullWidth

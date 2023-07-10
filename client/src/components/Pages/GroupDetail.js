@@ -14,9 +14,9 @@ import GroupPosts from "../Groups/GroupPosts";
 import { getAllGroupPosts } from "../../actions/posts";
 
 function GroupDetail() {
+  const { id } = useParams();
   const [drawer, setDrawer] = useState(false);
   const dispatch = useDispatch();
-  const { id } = useParams();
   const currentGroupId = useSelector((state) => state.selectedGroup);
   const {
     details: currentGroupDetails,
@@ -35,6 +35,7 @@ function GroupDetail() {
     dispatch(groupDetails(currentGroupId));
     dispatch(getAllGroupPosts(currentGroupId));
   }, [dispatch, id, currentGroupId]);
+
   return (
     <div style={{ marginTop: "80px" }}>
       <Path

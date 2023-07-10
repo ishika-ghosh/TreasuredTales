@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
-.card{
+.post-card{
     min-width: 250px;
-    max-width: 350px;
+    max-width: 450px;
     height: fit-content;
     border-radius: 20px;
     position: relative;
@@ -28,6 +28,24 @@
     text-shadow: black;
     font-family: 'Montserrat', sans-serif;
 }
+.fav-div{
+    position: absolute;
+    bottom: 10px;
+    left:20px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 50%;
+    background: #142f385c;
+}
+.icon{
+    font-size: 20px;
+}
+.icon.liked{
+    color: red;
+}
 .card-body{
     height: 100%;
     width: 100%;
@@ -46,7 +64,7 @@
     transition: all 0.5s ease;
 }
 
-.card:hover .card-body{
+.post-card:hover .card-body{
     left: 0px;
 }
 .card-title{
@@ -70,7 +88,7 @@
 }
 .option-div{
     position: absolute;
-    top: 35px;
+    bottom: 40px;
     right:35px;
     background: white;
     border-radius: 2px;
@@ -91,13 +109,17 @@
     background: rgb(189, 186, 186);
 }
 .info-button{
-    background: none;
-    border-radius: 2px;
-    padding: 0px;
+    background: #041d2570;
+    border-radius: 50%;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    top: 20px;
+    bottom: 10px;
     right: 20px;
     border: none;
     cursor: pointer;
+    color: #fff;
 }
 

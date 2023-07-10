@@ -6,6 +6,7 @@ import postRoutes from "./routes/posts.js";
 import authRoutes from "./routes/auth.js";
 import groupRoutes from "./routes/groups.js";
 import searchRoutes from "./routes/search.js";
+import sharePostRoutes from "./routes/sharePost.js";
 import dotenv from "dotenv";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
 app.use("/groups", groupRoutes);
 app.use("/search", searchRoutes);
+app.use("/share-post", sharePostRoutes);
 app.get("/", (req, res) => {
   res.send("hello world");
 });

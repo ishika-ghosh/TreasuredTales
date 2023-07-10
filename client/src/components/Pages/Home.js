@@ -17,7 +17,7 @@ function Home({ isloading, setIsloading }) {
   return (
     <div style={{ marginTop: "80px" }}>
       <AddPost />
-      <Posts isloading={isloading} posts={posts} />
+      <Posts isloading={isloading} posts={posts} sharedPosts={false} />
       <Share />
     </div>
   );

@@ -1,13 +1,18 @@
 import {
-  SHARE_POST_ERROR,
   DELETE,
   UPDATE_POST,
   FETCH_ALL,
   CREATE_POST,
   LOADING,
-  REMOVE_SHARE_ERROR,
+  SHARE_POST_LOADING,
+  SHARE_POST,
 } from "../actions/action";
-const initialState = { loading: false, posts: [], error: null };
+const initialState = {
+  loading: false,
+  posts: [],
+  error: null,
+  shareLoading: false,
+};
 export const posts = (state = initialState, action) => {
   switch (action.type) {
     case DELETE:
@@ -34,12 +39,18 @@ export const posts = (state = initialState, action) => {
         loading: false,
         posts: [...state.posts, action.payload],
       };
-    case SHARE_POST_ERROR:
-      return { ...state, error: action?.payload };
-    case REMOVE_SHARE_ERROR:
-      return { ...state, error: null };
     case LOADING:
       return { ...state, loading: true };
+    case SHARE_POST_LOADING:
+      return { ...state, shareLoading: true };
+    case SHARE_POST:
+      return {
+        ...state,
+        shareLoading: false,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     default:
       return state;
   }

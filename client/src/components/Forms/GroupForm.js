@@ -1,9 +1,8 @@
-import { Alert, Box, Button, Grid, List, Chip } from "@mui/material";
+import { Box, Button, Grid, List, Chip } from "@mui/material";
 import Input from "../common/Input";
 import UserList from "../common/UserList";
 
 function GroupForm({
-  error,
   groupData,
   handleMembers,
   handleDelete,
@@ -88,16 +87,7 @@ function GroupForm({
           </>
         </Grid>
         <Grid item xs={12}>
-          {error && <Alert security="error">{error}</Alert>}
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={handleSubmit}
-            disabled={error !== null}
-          >
+          <Button fullWidth variant="contained" onClick={handleSubmit}>
             Create Group
           </Button>
         </Grid>
