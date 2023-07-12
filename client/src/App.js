@@ -24,7 +24,7 @@ function App() {
       <BrowserRouter>
         <Navbar setProfile={() => setProfile(true)} />
         <PostDetails open={postDetails} />
-        <Routes>
+        {/* <Routes>
           <Route
             exact
             path="/"
@@ -39,7 +39,7 @@ function App() {
             }
           />
           <Route exact path="/groups/:id" element={<GroupDetail />} />
-        </Routes>
+        </Routes> */}
         <SnackBar />
         <Profile open={profile} handleProfile={() => setProfile(false)} />
       </BrowserRouter>

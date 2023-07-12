@@ -6,6 +6,7 @@ import {
   LOADING,
   SHARE_POST_LOADING,
   SHARE_POST,
+  STOP_SHARE_POST_LOADING,
 } from "../actions/action";
 const initialState = {
   loading: false,
@@ -43,6 +44,8 @@ export const posts = (state = initialState, action) => {
       return { ...state, loading: true };
     case SHARE_POST_LOADING:
       return { ...state, shareLoading: true };
+    case STOP_SHARE_POST_LOADING:
+      return { ...state, shareLoading: false };
     case SHARE_POST:
       return {
         ...state,

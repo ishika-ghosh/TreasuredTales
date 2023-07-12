@@ -131,15 +131,143 @@
 }
 
 .detailed-container{
-    position: absolute;
+    position: fixed;
     top:0px;
     left:0px;
     height: 100vh;
     width: 100%;
-    background: rgba(0, 0, 0, 0.812);
+    background: rgba(0, 0, 0, 0.721);
+    backdrop-filter: blur(3px);
     color: #fff;
     margin: 0px;
-    z-index: 30000;
-    margin-top: -80px;
-    padding-top: 20px;
+    z-index: 3000;
+
 }
+.detailed-container.closed{
+    display: none;
+}
+.header-div{
+    position: relative;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    padding-top: 15px;
+    z-index: 20000;
+}
+.header-left{
+    flex-basis: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.header-title-div{
+    display: flex;
+    max-width: 50%;
+    align-items: center;
+}
+.header-pic{
+    height: 2em;
+    width: auto;
+    filter: invert(90%);
+    margin-left: 1em;
+}
+.header-title{
+    font-size: 1.4em;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 0.3em;
+}
+.back-btn{
+    border: none;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+.back-btn>svg{
+    font-size: 3em;
+}
+.back-btn.right>svg{
+    font-size: 2em;
+    color: #ffffffdc;
+}
+.lower-div {
+    width: 100%;
+    height: 90%;
+    padding: 10px 0px;
+    display: flex;
+    align-items: center;
+}
+.image-div{
+    height:100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2em;
+    position: relative;
+    transition: all 0.5s ease;
+
+}
+.image-div.info{
+    width: 70%;
+}
+.details-image{    
+    width: 100%;
+    height: 580px;
+    display: block;
+    object-fit: contain;
+}
+.tools{
+    background-color: aquamarine;
+    position: absolute;
+    bottom: -1em;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20000;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    border-radius: 10px;
+    background:rgba(0, 0, 0, 0.619) ;
+    padding: 5px 1em;
+}
+.info-div{
+    width: 30%;
+    height: 100%;
+    padding-left: 5em;
+    padding-right: 1em;
+   
+}
+.info-card{
+    height:100% ;
+    border-radius: 30px;
+    background-color: rgba(21, 21, 21, 0.759);
+}
+/* @media screen and (max-width: 992px){
+    .image-div{
+        margin: 0px 0px;
+    }
+}
+
+@media screen and (max-width: 970px){
+    .image-div{
+        width: 40%;
+    }
+}
+@media screen and (max-width: 800px) {
+    .image-div {
+        width: 50%;
+    }
+}
+@media screen and (max-width: 500px) {
+    .image-div {
+        width: 70%;
+    }
+}
+@media screen and (max-width: 400px) {
+    .image-div {
+        width: 90%;
+    }
+} */

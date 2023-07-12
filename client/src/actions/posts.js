@@ -30,6 +30,7 @@ import {
   ERROR,
   UPDATE_SHARED_POST,
   REMOVE_FROM_SHARED_POST,
+  STOP_SHARE_POST_LOADING,
 } from "./action";
 //Individual post
 
@@ -100,10 +101,15 @@ export const shareMemory = (id, shareData) => async (dispatch) => {
     dispatch({ type: CLOSE_SHARE_MODAL });
   } catch (error) {
     console.log(error);
+    const { data } = error.response;
+    console.log(data.message);
     dispatch({
       type: ERROR,
-      payload: "Something went wrong please try again later",
+      payload: data.message,
     });
+    dispatch({ type: CLEAR_SELECTED_POST });
+    dispatch({ type: CLOSE_SHARE_MODAL });
+    dispatch({ type: STOP_SHARE_POST_LOADING });
   }
 };
 export const handleSharedPost = (id) => async (dispatch) => {
