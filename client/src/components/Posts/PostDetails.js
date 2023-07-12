@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { Chip } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import CloseIcon from "@mui/icons-material/Close";
+import ShareIcon from "@mui/icons-material/Share";
 import { CLOSE_POST_DETAILS } from "./../../actions/action";
 import picture from "./picture.png";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { Divider, Tooltip } from "@mui/material";
-function PostDetails({ open }) {
+function PostDetails({ open, details }) {
+  const editors = details?.editor.filter(
+    (user) => user._id !== details.creator._id
+  );
   const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
   const handleClose = () => {
@@ -24,7 +29,7 @@ function PostDetails({ open }) {
           </button>
           <div className="header-title-div">
             <img src={picture} alt="logo" className="header-pic" />
-            <span className="header-title">Header</span>
+            <span className="header-title">{details?.title}</span>
           </div>
         </div>
         <button
@@ -46,31 +51,24 @@ function PostDetails({ open }) {
             {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
               <>
                 <div className="tools">
-                  <Tooltip title="zoom in" arrow>
-                    <button onClick={() => zoomIn()} className="back-btn right">
-                      <AddIcon />
-                    </button>
-                  </Tooltip>
-                  <Tooltip title="zoom out" arrow>
-                    <button
-                      onClick={() => zoomOut()}
-                      className="back-btn right"
-                    >
-                      <RemoveIcon />
-                    </button>
-                  </Tooltip>
-                  <Tooltip title="Reset Zoom" arrow>
-                    <button
-                      onClick={() => resetTransform()}
-                      className="back-btn right"
-                    >
-                      <ZoomOutIcon />
-                    </button>
-                  </Tooltip>
+                  <button onClick={() => zoomIn()} className="back-btn right">
+                    <AddIcon />
+                  </button>
+
+                  <button onClick={() => zoomOut()} className="back-btn right">
+                    <RemoveIcon />
+                  </button>
+
+                  <button
+                    onClick={() => resetTransform()}
+                    className="back-btn right"
+                  >
+                    <ZoomOutIcon />
+                  </button>
                 </div>
                 <TransformComponent>
                   <img
-                    src={require("./Ishika-1.jpg")}
+                    src={`${details?.selectedFile}`}
                     alt="post"
                     className="details-image"
                   />
@@ -81,7 +79,97 @@ function PostDetails({ open }) {
         </div>
         {showDetails && (
           <div className="info-div">
-            <div className="info-card"></div>
+            <div className="info-card">
+              <div className="detail-div first">
+                <span>Details</span>
+                <button
+                  className="back-btn right"
+                  onClick={() => setShowDetails(false)}
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+              <hr className="divider" />
+              <div className="detail-div">
+                <div className="single-info">
+                  <div className="main-heading">Title</div>
+                  <div className="heading-content">{details?.title}</div>
+                </div>
+                <div className="single-info">
+                  <div className="main-heading">Message</div>
+                  <div className="heading-content">{details?.message}</div>
+                </div>
+                <div className="single-info">
+                  <div className="main-heading">Created At</div>
+                  <div className="heading-content">
+                    {new Date(details?.createdAt).toLocaleTimeString()}
+                  </div>
+                </div>
+                <div className="single-info">
+                  <div className="main-heading">Created By</div>
+                  <div className="heading-content">{details?.creator.name}</div>
+                </div>
+                {details?.editDetails.editedAt && (
+                  <>
+                    <div className="single-info">
+                      <div className="main-heading">Last Edited</div>
+                      <div className="heading-content">
+                        {new Date(
+                          details?.editDetails.editedAt
+                        ).toLocaleTimeString()}
+                      </div>
+                    </div>
+                    <div className="single-info">
+                      <div className="main-heading">Edited By</div>
+                      <div className="heading-content">
+                        {details?.editDetails?.editedBy.name}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              <hr className="divider" />
+              <div className="detail-div first">
+                <span>Shared With</span>
+                <ShareIcon />
+              </div>
+              <div className="detail-div">
+                {editors.length > 0 && (
+                  <div className="single-info">
+                    <div className="main-heading access">Editors</div>
+                    {
+                      <div className="heading-content access">
+                        {editors?.map((user) => (
+                          <Chip
+                            key={user._id}
+                            label={user.email}
+                            onDelete={() => console.log("delete")}
+                            sx={{ color: "white" }}
+                          />
+                        ))}
+                      </div>
+                    }
+                  </div>
+                )}
+                {details.viewer.length > 0 && (
+                  <div className="single-info">
+                    <div className="main-heading access">Viewers</div>
+                    {
+                      <div className="heading-content access">
+                        {details.viewer.map((user) => (
+                          <Chip
+                            key={user._id}
+                            label={user.email}
+                            onDelete={() => console.log("delete")}
+                            sx={{ color: "white" }}
+                          />
+                        ))}
+                      </div>
+                    }
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

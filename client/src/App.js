@@ -17,14 +17,16 @@ function App() {
   const [isloading, setIsloading] = useState(true);
   // const [loacation,setLocation]=useState(null);
   const [profile, setProfile] = useState(false);
-  const postDetails = useSelector((state) => state.postDetails);
+  const { postState: postDetails, currentPost } = useSelector(
+    (state) => state.postDetails
+  );
 
   return (
     <>
       <BrowserRouter>
         <Navbar setProfile={() => setProfile(true)} />
-        <PostDetails open={postDetails} />
-        {/* <Routes>
+        <PostDetails open={postDetails} details={currentPost} />
+        <Routes>
           <Route
             exact
             path="/"
@@ -39,7 +41,7 @@ function App() {
             }
           />
           <Route exact path="/groups/:id" element={<GroupDetail />} />
-        </Routes> */}
+        </Routes>
         <SnackBar />
         <Profile open={profile} handleProfile={() => setProfile(false)} />
       </BrowserRouter>

@@ -7,7 +7,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { CircularProgress, Typography } from "@mui/material";
-import { OPEN_POST_DETAILS, SET_SELECTED_POST } from "../../actions/action";
+import { SELECT_POST_DETAILS, SET_SELECTED_POST } from "../../actions/action";
 import { LikeGroupPost, handleSharedPost } from "../../actions/posts";
 import Option from "./Option";
 import "./style.css";
@@ -55,7 +55,10 @@ export default function Post({
   return (
     <div
       className="post-card"
-      onDoubleClick={() => dispatch({ type: OPEN_POST_DETAILS })}
+      onDoubleClick={() => {
+        console.log(post);
+        dispatch({ type: SELECT_POST_DETAILS, payload: post });
+      }}
     >
       {loading && _id === currentId ? (
         <CircularProgress sx={{ alignSelf: "center" }} />
@@ -97,7 +100,7 @@ export default function Post({
             </div>
           )}
 
-          <div className="card-body">
+          <div className="card-body prevent-select">
             <h1 className="caed-title">{title}</h1>
             <p className="card-message">{message}</p>
             <p className="card-tags">{tags.map((t) => `${t} `)} </p>
