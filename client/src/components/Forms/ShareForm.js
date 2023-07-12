@@ -17,7 +17,7 @@ import { grey } from "@mui/material/colors";
 function ShareForm({ shareData, handleChange, handleShare }) {
   return (
     <Box sx={{ mt: 1 }}>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <Input
             label="Email"
@@ -33,7 +33,7 @@ function ShareForm({ shareData, handleChange, handleShare }) {
           xs={12}
           sx={{ background: grey[100], mt: 1, borderRadius: 2 }}
         >
-          <Typography variant="h6" component="h4" sx={{ mb: 1 }}>
+          <Typography variant="h6" component="h1" sx={{ mb: 0 }}>
             <LockPersonIcon /> Restricted access
           </Typography>
           <Box sx={{ minWidth: 120 }}>
@@ -59,7 +59,7 @@ function ShareForm({ shareData, handleChange, handleShare }) {
       <Button
         fullWidth
         variant="contained"
-        sx={{ mt: 3, mb: 1 }}
+        sx={{ mt: 2, mb: 1 }}
         onClick={() => handleShare()}
       >
         <ShareIcon /> Share

@@ -9,6 +9,7 @@ import {
   updateGroupPost,
   deleteGroupPost,
   sharePost,
+  likePost,
 } from "./../api/Post";
 import {
   FETCH_ALL,
@@ -89,10 +90,14 @@ export const shareMemory = (id, shareData) => async (dispatch) => {
     dispatch({ type: SHARE_POST_LOADING });
     const { data } = await sharePost(id, shareData);
     console.log(data);
+    if (!data._id) {
+      dispatch({ type: ERROR, payload: data.message });
+    } else {
+      dispatch({ type: SUCCESS, payload: "Memory shared successfully" });
+    }
     dispatch({ type: SHARE_POST, payload: data });
     dispatch({ type: CLEAR_SELECTED_POST });
     dispatch({ type: CLOSE_SHARE_MODAL });
-    dispatch({ type: SUCCESS, payload: "Memory shared successfully" });
   } catch (error) {
     console.log(error);
     dispatch({
@@ -162,4 +167,12 @@ export const deleteGroupMemory = (postId, groupId) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+export const LikeGroupPost = (postId, groupId) => async (dispatch) => {
+  try {
+    const { data } = await likePost(groupId, postId);
+    console.log(data);
+    dispatch({ type: UPDATE_GROUP_POST, payload: data });
+    dispatch({ type: CLEAR_SELECTED_POST });
+  } catch (error) {}
 };

@@ -1,3 +1,4 @@
+import React from "react";
 import { Modal, Fade, Container, Box } from "@mui/material";
 function CommonModal({ children, open, handleClose }) {
   return (

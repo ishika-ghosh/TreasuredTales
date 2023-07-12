@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../../actions/posts";
@@ -17,7 +18,12 @@ function Home({ isloading, setIsloading }) {
   return (
     <div style={{ marginTop: "80px" }}>
       <AddPost />
-      <Posts isloading={isloading} posts={posts} sharedPosts={false} />
+      <Posts
+        isloading={isloading}
+        posts={posts}
+        sharedPosts={false}
+        groupPosts={false}
+      />
       <Share />
     </div>
   );

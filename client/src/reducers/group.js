@@ -25,6 +25,7 @@ export const group = (state = initialState, action) => {
     case DELETE_GROUP:
       return {
         ...state,
+        loading: false,
         groups: state.groups.filter((group) => group._id !== action?.payload),
       };
     case GROUP_LOADING:

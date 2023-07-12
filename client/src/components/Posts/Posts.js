@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import {
   Box,
@@ -9,23 +10,11 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import Post from "./Post";
-export default function Posts({ isloading, posts, sharedPosts, GroupPosts }) {
+import EmptySpace from "../common/EmptySpace";
+export default function Posts({ isloading, posts, sharedPosts, groupPosts }) {
   const [width, setWidth] = useState(window.innerWidth);
   const user = useSelector((state) => state.userAuth.authData);
   const currentGroup = useSelector((state) => state.currentGroup.details);
-  const handleAccess = () => {
-    if (currentGroup) {
-      if (
-        currentGroup.access.includes(user.data._id) ||
-        currentGroup.creator._id === user.data._id
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    return true;
-  };
 
   useEffect(() => {
     window.addEventListener("resize", () => setWidth(window.innerWidth));
@@ -62,6 +51,8 @@ export default function Posts({ isloading, posts, sharedPosts, GroupPosts }) {
         <Typography variant="h5">You must log in to create memories</Typography>
       </Paper>
     )
+  ) : posts.length === 0 ? (
+    <EmptySpace />
   ) : (
     <Box sx={styles}>
       <ImageList variant="masonry" cols={setCols()} gap={5}>
@@ -70,8 +61,14 @@ export default function Posts({ isloading, posts, sharedPosts, GroupPosts }) {
             <Post
               post={item}
               loading={isloading}
-              hasAccess={handleAccess()}
+              hasAccess={
+                currentGroup
+                  ? currentGroup.access.includes(user?.data._id)
+                  : true
+              }
               sharedPost={sharedPosts}
+              groupPost={groupPosts}
+              userId={user?.data._id}
             />
           </ImageListItem>
         ))}

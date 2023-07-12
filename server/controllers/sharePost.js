@@ -18,7 +18,16 @@ export const getAllSharedPosts = async (req, res) => {
           { creator: { $ne: req.userId } },
         ],
       })
-      .populate("creator", "-password");
+      .populate({
+        path: "creator",
+        model: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "editDetails.editedBy",
+        model: "user",
+        select: "-password",
+      });
     const x = isFavourite(posts, req.userId);
     return res.status(200).json(x);
   } catch (error) {
@@ -35,22 +44,44 @@ export const addOrRemoveFavourite = async (req, res) => {
     const post = await postMessage.findById(_id);
     let updated;
     if (post.addToFavouriteBy.includes(req.userId)) {
-      updated = await postMessage.findByIdAndUpdate(
-        _id,
-        {
-          $pull: { addToFavouriteBy: req.userId },
-        },
-        { new: true }
-      );
+      updated = await postMessage
+        .findByIdAndUpdate(
+          _id,
+          {
+            $pull: { addToFavouriteBy: req.userId },
+          },
+          { new: true }
+        )
+        .populate({
+          path: "creator",
+          model: "user",
+          select: "-password",
+        })
+        .populate({
+          path: "editDetails.editedBy",
+          model: "user",
+          select: "-password",
+        });
       return res.status(200).json({ ...updated._doc, isFavourite: false });
     } else {
-      updated = await postMessage.findByIdAndUpdate(
-        _id,
-        {
-          $push: { addToFavouriteBy: req.userId },
-        },
-        { new: true }
-      );
+      updated = await postMessage
+        .findByIdAndUpdate(
+          _id,
+          {
+            $push: { addToFavouriteBy: req.userId },
+          },
+          { new: true }
+        )
+        .populate({
+          path: "creator",
+          model: "user",
+          select: "-password",
+        })
+        .populate({
+          path: "editDetails.editedBy",
+          model: "user",
+          select: "-password",
+        });
       return res.status(200).json({ ...updated._doc, isFavourite: true });
     }
   } catch (error) {
@@ -70,7 +101,16 @@ export const getAllEditorAccessPosts = async (req, res) => {
           },
         ],
       })
-      .populate("creator", "-password");
+      .populate({
+        path: "creator",
+        model: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "editDetails.editedBy",
+        model: "user",
+        select: "-password",
+      });
     posts = isFavourite(posts, req.userId);
     return res.status(200).json(posts);
   } catch (error) {
@@ -90,7 +130,16 @@ export const getAllViewerAccessPosts = async (req, res) => {
           },
         ],
       })
-      .populate("creator", "-password");
+      .populate({
+        path: "creator",
+        model: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "editDetails.editedBy",
+        model: "user",
+        select: "-password",
+      });
     posts = isFavourite(posts, req.userId);
     return res.status(200).json(posts);
   } catch (error) {

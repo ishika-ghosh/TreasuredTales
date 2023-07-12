@@ -8,6 +8,7 @@ import { group } from "./group";
 import { selectedGroup } from "./selectedGroup";
 import { currentGroup } from "./groupDetails";
 import { sharedPosts } from "./share";
+import { postDetails } from "./postDetails";
 
 export default combineReducers({
   posts,
@@ -19,4 +20,5 @@ export default combineReducers({
   selectedGroup,
   currentGroup,
   sharedPosts,
+  postDetails,
 });

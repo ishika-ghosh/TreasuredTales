@@ -10,4 +10,8 @@ export const addtoGroup = (id, newmember) =>
   API.patch(`${URL}/addtogroup/${id}`, { memberId: newmember });
 export const removefromGroup = (id, memberId) =>
   API.patch(`${URL}/removefromgroup/${id}`, { memberId });
+export const giveAccess = (groupId, memberId) =>
+  API.patch(`${URL}/give-access/${groupId}`, { memberId });
+export const leaveGroup = (groupId) =>
+  API.patch(`${URL}/leave-group/${groupId}`);
 export const getGroupDetails = (id) => API.get(`${URL}/${id}`);

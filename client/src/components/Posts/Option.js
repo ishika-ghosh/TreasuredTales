@@ -1,3 +1,4 @@
+import React from "react";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteGroupMemory, deleteMemory } from "../../actions/posts";
@@ -12,7 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import { Divider } from "@mui/material";
-function Option({ sharedPost, editor }) {
+function Option({ sharedPost, editor, groupPost, hasAccess, isCreator }) {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
   const currentGroupId = useSelector((state) => state.selectedGroup);
@@ -35,10 +36,13 @@ function Option({ sharedPost, editor }) {
   const handleShare = () => {
     dispatch({ type: OPEN_SHARE_MODAL });
   };
+
   return (
     <div className="option-div">
       <ul style={{ listStyle: "none" }}>
-        {editor.includes(userId) && (
+        {((editor.includes(userId) && sharedPost) ||
+          (groupPost && hasAccess) ||
+          isCreator) && (
           <li>
             <button className="button" onClick={handleUpdate}>
               <EditIcon />
@@ -59,18 +63,21 @@ function Option({ sharedPost, editor }) {
             <Divider />
           </>
         )}
-        {
+
+        {!currentGroupId && hasAccess && (
           <li>
             <button className="button" onClick={handleDelete}>
               <DeleteIcon />
-              {currentGroupId || sharedPost ? (
-                <span>Remove</span>
-              ) : (
-                <span>Delete</span>
-              )}
+              {sharedPost ? <span>Remove</span> : <span>Delete</span>}
             </button>
           </li>
-        }
+        )}
+        {currentGroupId && isCreator && (
+          <button className="button" onClick={handleDelete}>
+            <DeleteIcon />
+            <span>Remove</span>
+          </button>
+        )}
       </ul>
     </div>
   );

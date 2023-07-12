@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import postMessage from "./../models/posts.js";
 import User from "../models/user.js";
+import group from "../models/group.js";
 
 export const getPosts = async (req, res) => {
   const { groupid: q } = req.query;
@@ -9,7 +10,21 @@ export const getPosts = async (req, res) => {
       return res.status(404).json("Not a valid id");
     }
     try {
-      const posts = await postMessage.find({ groups: q });
+      const posts = await postMessage
+        .find({ groups: q })
+        .populate({
+          path: "creator",
+          model: "user",
+          select: "name",
+        })
+        .populate({
+          path: "editDetails.editedBy",
+          model: "user",
+          select: "name",
+        })
+        .populate("editor", "email")
+        .populate("viewer", "email");
+
       return res.status(200).json(posts);
     } catch (error) {
       console.log(error);
@@ -17,9 +32,26 @@ export const getPosts = async (req, res) => {
   } else {
     try {
       console.log("in server");
-      const posts = await postMessage.find({
-        $and: [{ creator: req.userId }, { groups: [] }, { editor: req.userId }],
-      });
+      const posts = await postMessage
+        .find({
+          $and: [
+            { creator: req.userId },
+            { groups: [] },
+            { editor: req.userId },
+          ],
+        })
+        .populate({
+          path: "creator",
+          model: "user",
+          select: "name",
+        })
+        .populate({
+          path: "editDetails.editedBy",
+          model: "user",
+          select: "name",
+        })
+        .populate("editor", "email")
+        .populate("viewer", "email");
       res.status(200).json(posts);
     } catch (error) {
       console.log(error);
@@ -52,7 +84,21 @@ export const createPost = async (req, res) => {
   try {
     console.log(newPost);
     await newPost.save();
-    res.status(200).json(newPost);
+    const post = await postMessage
+      .findById(newPost._id)
+      .populate({
+        path: "creator",
+        model: "user",
+        select: "name",
+      })
+      .populate({
+        path: "editDetails.editedBy",
+        model: "user",
+        select: "name",
+      })
+      .populate("editor", "email")
+      .populate("viewer", "email");
+    res.status(200).json(post);
     console.log("Saved in database");
   } catch (error) {
     console.log(error);
@@ -79,10 +125,17 @@ export const updatePost = async (req, res) => {
         }
       )
       .populate({
+        path: "creator",
+        model: "user",
+        select: "name",
+      })
+      .populate({
         path: "editDetails.editedBy",
         model: "user",
-        select: "-password",
-      });
+        select: "name",
+      })
+      .populate("editor", "email")
+      .populate("viewer", "email");
     console.log(updatedPost);
     res.json(updatedPost);
   } catch (error) {
@@ -97,42 +150,56 @@ export const deletePost = async (req, res) => {
   const post = await postMessage.findById(_id);
   try {
     if (q) {
-      if (post.groups.length > 0) {
-        await postMessage.findByIdAndUpdate(
-          _id,
-          { $pull: { groups: q } },
-          { new: true }
-        );
-        return res.status(200).json("Memory removed successfully");
+      const grp = await group.findById(q);
+      if (
+        grp.access.includes(req.userId) &&
+        String(post.creator) === req.userId
+      ) {
+        if (post.groups.length > 1) {
+          await postMessage.findByIdAndUpdate(
+            _id,
+            { $pull: { groups: q } },
+            { new: true }
+          );
+          return res.status(200).json("Memory removed successfully");
+        } else {
+          await postMessage.findByIdAndDelete(_id);
+          res.json({ message: "the data is successfully deleted" });
+        }
       } else {
-        await postMessage.findByIdAndDelete(_id);
-        res.json({ message: "the data is successfully deleted" });
+        return res
+          .status(403)
+          .json({ message: "You don't have access to delete this post" });
       }
     } else {
-      if (
-        post.editor.length == 1 &&
-        post.viewer.length == 0 &&
-        String(post.editor[0]) == req.userId
-      ) {
+      if (String(post.creator) === req.userId) {
         await postMessage.deleteOne({ _id: _id });
-      } else if (post.editor.length > 1 && post.editor.includes(req.userId)) {
-        await postMessage.findByIdAndUpdate(
-          _id,
-          {
+        return res.status(200).json("The post was successfully deleted");
+      } else if (post.editor.includes(req.userId)) {
+        if (post.addToFavouriteBy.includes(req.userId)) {
+          await postMessage.findByIdAndUpdate(_id, {
+            $pull: { addToFavouriteBy: req.userId },
             $pull: { editor: req.userId },
-          },
-          { new: true }
-        );
+          });
+        } else {
+          await postMessage.findByIdAndUpdate(_id, {
+            $pull: { editor: req.userId },
+          });
+        }
+        return res.status(200).json({ message: "Post removed successfully" });
       } else if (post.viewer.includes(req.userId)) {
-        await postMessage.findByIdAndUpdate(
-          _id,
-          {
+        if (post.addToFavouriteBy.includes(req.userId)) {
+          await postMessage.findByIdAndUpdate(_id, {
+            $pull: { addToFavouriteBy: req.userId },
             $pull: { viewer: req.userId },
-          },
-          { new: true }
-        );
+          });
+        } else {
+          await postMessage.findByIdAndUpdate(_id, {
+            $pull: { viewer: req.userId },
+          });
+        }
+        return res.status(200).json({ message: "Post removed successfully" });
       }
-      return res.json({ message: "the data is successfully deleted" });
     }
   } catch (error) {
     console.log(error);
@@ -164,24 +231,50 @@ export const sharePost = async (req, res) => {
       let updatedPost;
       if (post.viewer.includes(existingUser._id)) {
         console.log("here");
-        updatedPost = await postMessage.findByIdAndUpdate(
-          _id,
-          {
-            $pull: { viewer: existingUser._id },
-            $push: { editor: existingUser._id },
-          },
+        updatedPost = await postMessage
+          .findByIdAndUpdate(
+            _id,
+            {
+              $pull: { viewer: existingUser._id },
+              $push: { editor: existingUser._id },
+            },
 
-          { new: true }
-        );
+            { new: true }
+          )
+          .populate({
+            path: "creator",
+            model: "user",
+            select: "name",
+          })
+          .populate({
+            path: "editDetails.editedBy",
+            model: "user",
+            select: "name",
+          })
+          .populate("editor", "email")
+          .populate("viewer", "email");
         return res.status(200).json(updatedPost);
       } else {
-        updatedPost = await postMessage.findByIdAndUpdate(
-          _id,
-          {
-            $push: { editor: existingUser._id },
-          },
-          { new: true }
-        );
+        updatedPost = await postMessage
+          .findByIdAndUpdate(
+            _id,
+            {
+              $push: { editor: existingUser._id },
+            },
+            { new: true }
+          )
+          .populate({
+            path: "creator",
+            model: "user",
+            select: "name",
+          })
+          .populate({
+            path: "editDetails.editedBy",
+            model: "user",
+            select: "name",
+          })
+          .populate("editor", "email")
+          .populate("viewer", "email");
         return res.status(200).json(updatedPost);
       }
     } else {
@@ -190,17 +283,93 @@ export const sharePost = async (req, res) => {
           message: "The post id already shared with the user",
         });
       } else {
-        const updatedPost = await postMessage.findByIdAndUpdate(
-          _id,
-          {
-            $push: { viewer: existingUser._id },
-          },
-          { new: true }
-        );
+        const updatedPost = await postMessage
+          .findByIdAndUpdate(
+            _id,
+            {
+              $push: { viewer: existingUser._id },
+            },
+            { new: true }
+          )
+          .populate({
+            path: "creator",
+            model: "user",
+            select: "name",
+          })
+          .populate({
+            path: "editDetails.editedBy",
+            model: "user",
+            select: "name",
+          })
+          .populate("editor", "email")
+          .populate("viewer", "email");
         return res.status(200).json(updatedPost);
       }
     }
   } catch (error) {
     console.log(error);
+  }
+};
+export const likeGroupPost = async (req, res) => {
+  const { groupid: q } = req.query;
+  const { id: _id } = req.params;
+  if (
+    !mongoose.Types.ObjectId.isValid(_id) &&
+    !mongoose.Types.ObjectId.isValid(q)
+  )
+    return res.status(404).json({ error: "Not a valid id" });
+  try {
+    if (q) {
+      const post = await postMessage.findById(_id);
+      if (post.groups.includes(q)) {
+        if (post.likedBy.includes(req.userId)) {
+          const updatedPost = await postMessage
+            .findByIdAndUpdate(
+              _id,
+              {
+                $pull: { likedBy: req.userId },
+              },
+              { new: true }
+            )
+            .populate({
+              path: "creator",
+              model: "user",
+              select: "-password",
+            })
+            .populate({
+              path: "editDetails.editedBy",
+              model: "user",
+              select: "-password",
+            });
+          return res.status(200).json(updatedPost);
+        } else {
+          const updatedPost = await postMessage
+            .findByIdAndUpdate(
+              _id,
+              {
+                $push: { likedBy: req.userId },
+              },
+              { new: true }
+            )
+            .populate({
+              path: "creator",
+              model: "user",
+              select: "-password",
+            })
+            .populate({
+              path: "editDetails.editedBy",
+              model: "user",
+              select: "-password",
+            });
+          return res.status(200).json(updatedPost);
+        }
+      } else {
+        return res
+          .status(404)
+          .json({ message: "The post does not belong to this group" });
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };

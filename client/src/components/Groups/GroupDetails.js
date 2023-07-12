@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +18,7 @@ import {
 import { deepOrange } from "@mui/material/colors";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import SwitchAccessShortcutIcon from "@mui/icons-material/SwitchAccessShortcut";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,9 +27,10 @@ import Input from "./../common/Input";
 import {
   addMembers,
   deleteGroupWithAllMemories,
-  exitGroup,
+  giveAccessOfGroup,
   groupRename,
   kickFromGroup,
+  leaveAGroup,
 } from "../../actions/groups";
 import UserList from "../common/UserList";
 import { API } from "../../api";
@@ -36,9 +39,9 @@ function GroupDetails({ handleClose, groupDetails }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userAuth.authData);
-  const [isCreator, setIsCreator] = useState(
-    user.data._id === groupDetails?.creator._id
-  );
+  // const [isCreator, setIsCreator] = useState(
+  //   user?.data._id === groupDetails?.creator._id
+  // );
   const [rename, setRename] = useState({
     state: false,
     name: groupDetails.name,
@@ -63,12 +66,16 @@ function GroupDetails({ handleClose, groupDetails }) {
   };
   const handleExitGroup = () => {
     if (dialogDetails.q) {
-      dispatch(exitGroup(groupDetails._id, user.data._id));
+      dispatch(leaveAGroup(groupDetails._id));
     } else {
       dispatch(deleteGroupWithAllMemories(groupDetails._id));
     }
     setDialogDetails({ ...dialogDetails, open: false });
     navigate("/groups");
+  };
+  const handleAccess = (id) => {
+    console.log(id);
+    dispatch(giveAccessOfGroup(groupDetails._id, id));
   };
   useEffect(() => {
     const func = async () => {
@@ -134,7 +141,7 @@ function GroupDetails({ handleClose, groupDetails }) {
                 >
                   {groupDetails.name}
                 </Typography>
-                {isCreator && (
+                {user?.data._id === groupDetails?.creator._id && (
                   <Button
                     variant="text"
                     color="secondary"
@@ -171,9 +178,13 @@ function GroupDetails({ handleClose, groupDetails }) {
                   sx={{ display: "inline" }}
                   ml={2}
                 >
-                  MEMBERS:{groupDetails.members.length + 1}
+                  MEMBERS:
+                  {groupDetails.members.length +
+                    (groupDetails?.access.includes(groupDetails?.creator._id)
+                      ? 1
+                      : 0)}
                 </Typography>
-                {isCreator && (
+                {user?.data._id === groupDetails?.creator._id && (
                   <Button
                     variant="text"
                     color="secondary"
@@ -194,6 +205,7 @@ function GroupDetails({ handleClose, groupDetails }) {
                   <List>
                     {options.map((option, i) => (
                       <UserList
+                        key={i}
                         option={option}
                         handleMembers={() => handleAdd(option._id)}
                       />
@@ -201,21 +213,25 @@ function GroupDetails({ handleClose, groupDetails }) {
                   </List>
                 </Box>
               )}
-              <MemberDetails
-                member={groupDetails.creator}
-                name={`${groupDetails.creator.name} (Admin)`}
-              />
+              {groupDetails?.access.includes(groupDetails?.creator._id) && (
+                <MemberDetails
+                  member={groupDetails.creator}
+                  name={`${groupDetails.creator.name} (Admin)`}
+                />
+              )}
               {groupDetails.members.map((member) => (
                 <MemberDetails
                   key={member._id}
                   member={member}
-                  show={isCreator}
+                  show={user?.data._id === groupDetails?.creator._id}
                   handleKick={handleKick}
                   name={
                     member._id === user.data._id
                       ? `${member.name} (You)`
                       : `${member.name}`
                   }
+                  hasAccess={groupDetails?.access.includes(member._id)}
+                  handleAccess={handleAccess}
                 />
               ))}
             </List>
@@ -238,7 +254,7 @@ function GroupDetails({ handleClose, groupDetails }) {
                 <ExitToAppIcon />
               </Button>
             </Tooltip>
-            {isCreator && (
+            {user?.data._id === groupDetails?.creator._id && (
               <Tooltip title="delete this group" arrow>
                 <Button
                   variant="contained"
@@ -267,7 +283,14 @@ function GroupDetails({ handleClose, groupDetails }) {
 
 export default GroupDetails;
 
-const MemberDetails = ({ member, show, handleKick, name }) => {
+const MemberDetails = ({
+  member,
+  show,
+  handleKick,
+  name,
+  hasAccess,
+  handleAccess,
+}) => {
   return (
     <ListItem alignItems="flex-start">
       <ListItemAvatar>
@@ -280,6 +303,19 @@ const MemberDetails = ({ member, show, handleKick, name }) => {
         </Avatar>
       </ListItemAvatar>
       <ListItemText primary={name} secondary={<>{member.email}</>} />
+      {show && !hasAccess && (
+        <>
+          <Tooltip title="Give Access to the member" arrow>
+            <Button
+              variant="text"
+              color="success"
+              onClick={() => handleAccess(member._id)}
+            >
+              <SwitchAccessShortcutIcon />
+            </Button>
+          </Tooltip>
+        </>
+      )}
       {show && (
         <>
           <Tooltip title="Kick the member" arrow>

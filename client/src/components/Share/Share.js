@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ShareIcon from "@mui/icons-material/Share";
@@ -36,12 +37,7 @@ function Share() {
         <ShareIcon />
       </Avatar>
 
-      <Typography
-        component="h1"
-        variant="h6"
-        id="transition-modal-title"
-        sx={{ mb: 2 }}
-      >
+      <Typography component="h1" variant="h6" id="transition-modal-title">
         Share memories with your friends
       </Typography>
       {shareLoading ? (

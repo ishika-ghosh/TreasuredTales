@@ -17,3 +17,5 @@ export const updateGroupPost = (postId, updatedPostData) =>
   API.patch(`${URL}/${postId}`, updatedPostData);
 export const deleteGroupPost = (groupId, postId) =>
   API.delete(`${URL}/${postId}?groupid=${groupId}`);
+export const likePost = (groupId, postId) =>
+  API.patch(`${URL}/like-post/${postId}?groupid=${groupId}`);

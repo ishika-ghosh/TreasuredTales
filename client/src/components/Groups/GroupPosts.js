@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +28,7 @@ function GroupPosts() {
 
   return (
     <div>
-      {group?.creator?._id === user.data?._id && (
+      {group?.access.includes(user?.data?._id) && (
         <Button
           variant="contained"
           startIcon={<AddAPhotoIcon />}
@@ -46,7 +47,12 @@ function GroupPosts() {
       <CommonModal open={modalState} handleClose={handleClose}>
         <AddAndUpdate open={modalState} loading={loading} />
       </CommonModal>
-      <Posts isloading={loading} posts={groupPosts} />
+      <Posts
+        isloading={loading}
+        posts={groupPosts}
+        sharedPosts={false}
+        groupPosts={true}
+      />
     </div>
   );
 }

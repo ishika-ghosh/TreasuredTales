@@ -1,3 +1,4 @@
+import React from "react";
 import { CircularProgress, Divider } from "@mui/material";
 import SortButton from "./SortButton";
 import { useSelector } from "react-redux";
@@ -20,6 +21,7 @@ function SharedPosts({ currentPosts }) {
           isloading={sharedPostLoading}
           posts={sharedPosts}
           sharedPosts={true}
+          groupPosts={false}
         />
       )}
     </div>

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -18,11 +19,9 @@ function GroupDetail() {
   const [drawer, setDrawer] = useState(false);
   const dispatch = useDispatch();
   const currentGroupId = useSelector((state) => state.selectedGroup);
-  const {
-    details: currentGroupDetails,
-    loading,
-    postLoading,
-  } = useSelector((state) => state.currentGroup);
+  const { details: currentGroupDetails, loading, postLoading } = useSelector(
+    (state) => state.currentGroup
+  );
 
   const toggleDrawer = (open) => {
     setDrawer(open);
