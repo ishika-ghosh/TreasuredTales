@@ -14,7 +14,7 @@ export const snackbarState = (
     case CLOSE_SNACKBAR:
       return { ...state, message: "", state: false };
     case ERROR:
-      console.log(action.payload);
+      // console.log(action.payload);
       return {
         ...state,
         state: true,

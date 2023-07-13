@@ -74,7 +74,7 @@ function GroupDetails({ handleClose, groupDetails }) {
     navigate("/groups");
   };
   const handleAccess = (id) => {
-    console.log(id);
+    // console.log(id);
     dispatch(giveAccessOfGroup(groupDetails._id, id));
   };
   useEffect(() => {

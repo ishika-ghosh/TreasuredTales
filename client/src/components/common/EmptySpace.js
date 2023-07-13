@@ -3,8 +3,8 @@ import "./style.css";
 import empty from "./empty.png";
 function EmptySpace() {
   return (
-    <div class="med-card">
-      <div class="circle">
+    <div className="med-card">
+      <div className="circle">
         <img src={empty} alt="logo" className="empty-logo" />
         <h3 className="header">TreasuredTales</h3>
         <p className="para">

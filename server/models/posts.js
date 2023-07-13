@@ -19,6 +19,7 @@ const postSchema = mongoose.Schema({
   addToFavouriteBy: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
   editor: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
   viewer: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
+  originGroup: { type: mongoose.SchemaTypes.ObjectId, ref: "group" },
 });
 
 const postMessage = mongoose.model("postMessage", postSchema);

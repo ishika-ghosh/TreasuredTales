@@ -15,3 +15,4 @@ export const giveAccess = (groupId, memberId) =>
 export const leaveGroup = (groupId) =>
   API.patch(`${URL}/leave-group/${groupId}`);
 export const getGroupDetails = (id) => API.get(`${URL}/${id}`);
+export const getSuggestions = () => API.get(`${URL}/options`);

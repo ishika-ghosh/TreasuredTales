@@ -15,7 +15,7 @@ export const postDetails = (
     case CLOSE_POST_DETAILS:
       return { ...state, postState: false };
     case SELECT_POST_DETAILS:
-      console.log(action.payload);
+      // console.log(action.payload);
       return { postState: true, currentPost: action.payload };
     case CLEAR_POST_DETAILS:
       return { postState: false, currentPost: null };

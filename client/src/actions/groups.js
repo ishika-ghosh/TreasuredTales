@@ -8,6 +8,7 @@ import {
   addtoGroup,
   giveAccess,
   leaveGroup,
+  getSuggestions,
 } from "../api/group";
 import {
   CLOSE_GROUP_MODAL,
@@ -20,10 +21,13 @@ import {
   CURRENT_GROUP_LOADING,
   DELETE_GROUP,
   CLEAR_SELECTED_GROUP,
+  OPEN_GROUP_SHARE_MODAL,
+  SET_GROUP_OPTIONS,
 } from "./action";
 
 export const fetchAllGroups = (setIsloading) => async (dispatch) => {
   try {
+    dispatch({ type: CLEAR_SELECTED_GROUP });
     const { data } = await getAllGroups();
     console.log(data);
     setIsloading(false);
@@ -115,6 +119,16 @@ export const leaveAGroup = (groupId) => async (dispatch) => {
     dispatch({ type: DELETE_GROUP, payload: groupId });
     dispatch({ type: SUCCESS, payload: "You left the group successfully" });
     dispatch({ type: CLEAR_SELECTED_GROUP });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const fetchGroupSuggestions = (group) => async (dispatch) => {
+  try {
+    dispatch({ type: OPEN_GROUP_SHARE_MODAL });
+    const { data } = await getSuggestions();
+    const options = data.filter((op) => !group?.includes(op._id));
+    dispatch({ type: SET_GROUP_OPTIONS, payload: options });
   } catch (error) {
     console.log(error);
   }

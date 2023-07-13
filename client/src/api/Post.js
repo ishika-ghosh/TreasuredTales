@@ -19,3 +19,9 @@ export const deleteGroupPost = (groupId, postId) =>
   API.delete(`${URL}/${postId}?groupid=${groupId}`);
 export const likePost = (groupId, postId) =>
   API.patch(`${URL}/like-post/${postId}?groupid=${groupId}`);
+export const sendToGroup = (groupId, postId) =>
+  API.patch(`${URL}/share-to-group/${postId}`, { groupId });
+export const removeEditAccess = (postId, memberId) =>
+  API.patch(`${URL}/remove-access/editor/${postId}`, { memberId });
+export const removeViewAccess = (postId, memberId) =>
+  API.patch(`${URL}//remove-access/viewer/${postId}`, { memberId });

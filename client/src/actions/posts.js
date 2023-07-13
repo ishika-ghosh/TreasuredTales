@@ -10,6 +10,9 @@ import {
   deleteGroupPost,
   sharePost,
   likePost,
+  sendToGroup,
+  removeEditAccess,
+  removeViewAccess,
 } from "./../api/Post";
 import {
   FETCH_ALL,
@@ -31,11 +34,16 @@ import {
   UPDATE_SHARED_POST,
   REMOVE_FROM_SHARED_POST,
   STOP_SHARE_POST_LOADING,
+  CLOSE_GROUP_SHARE_MODAL,
+  CLEAR_SELECTED_GROUP,
+  SELECT_POST_DETAILS,
+  CLEAR_POST_DETAILS,
 } from "./action";
 //Individual post
 
 export const fetchPosts = (setIsloading) => async (dispatch) => {
   try {
+    dispatch({ type: CLEAR_SELECTED_GROUP });
     const { data } = await getPosts();
     setIsloading(false);
     dispatch({ type: FETCH_ALL, payload: data });
@@ -133,6 +141,26 @@ export const updateSharedMemory = (id, updatedPost) => async (dispatch) => {
     console.log(error);
   }
 };
+export const removeAccess = (option, postId, memberId) => async (dispatch) => {
+  try {
+    if (option === 1) {
+      const { data } = await removeEditAccess(postId, memberId);
+      dispatch({ type: SELECT_POST_DETAILS, payload: data });
+    } else {
+      const { data } = await removeViewAccess(postId, memberId);
+      dispatch({ type: SELECT_POST_DETAILS, payload: data });
+    }
+    dispatch({ type: SUCCESS, payload: "Access removed successfully" });
+  } catch (error) {
+    const { data } = error.response;
+    console.log(data.message);
+    dispatch({
+      type: ERROR,
+      payload: data.message,
+    });
+    dispatch({ type: CLEAR_POST_DETAILS });
+  }
+};
 //group post CRUD
 
 export const getAllGroupPosts = (id) => async (dispatch) => {
@@ -182,3 +210,26 @@ export const LikeGroupPost = (postId, groupId) => async (dispatch) => {
     dispatch({ type: CLEAR_SELECTED_POST });
   } catch (error) {}
 };
+export const shareToGroup =
+  (postId, groupId, isGroupPost) => async (dispatch) => {
+    try {
+      const { data } = await sendToGroup(groupId, postId);
+      if (isGroupPost) {
+        dispatch({ type: UPDATE_GROUP_POST, payload: data });
+      } else {
+        dispatch({ type: UPDATE_POST, payload: data });
+      }
+      dispatch({ type: CLEAR_SELECTED_POST });
+      dispatch({ type: CLOSE_GROUP_SHARE_MODAL });
+      dispatch({ type: SUCCESS, payload: "Memory send to group successfully" });
+    } catch (error) {
+      console.log(error);
+      const { data } = error.response;
+      console.log(data.message);
+      dispatch({
+        type: ERROR,
+        payload: data.message,
+      });
+      dispatch({ type: CLEAR_SELECTED_POST });
+    }
+  };

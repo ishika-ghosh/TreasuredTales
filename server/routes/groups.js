@@ -9,6 +9,7 @@ import {
   getGroupDetails,
   giveAccess,
   leaveGroup,
+  getAllSharableGroups,
 } from "../controllers/group.js";
 import auth from "../middleware/auth.js";
 
@@ -22,6 +23,7 @@ router.patch("/addtogroup/:id", auth, addtoGroup);
 router.patch("/removefromgroup/:id", auth, removefromGroup);
 router.patch("/give-access/:id", auth, giveAccess);
 router.patch("/leave-group/:id", auth, leaveGroup);
+router.get("/options", auth, getAllSharableGroups);
 router.get("/:id", auth, getGroupDetails);
 
 export default router;

@@ -37,7 +37,7 @@ function CreateGroup() {
       return;
     }
     try {
-      console.log(inputValue);
+      // console.log(inputValue);
       func();
     } catch (error) {
       console.log(error);
@@ -65,7 +65,7 @@ function CreateGroup() {
     });
   };
   const handleSubmit = () => {
-    console.log(groupData);
+    // console.log(groupData);
     dispatch({ type: GROUP_LOADING });
     dispatch(createNewGroup(groupData));
   };

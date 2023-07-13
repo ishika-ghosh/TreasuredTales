@@ -39,17 +39,24 @@ export const deleteGroup = async (req, res) => {
   try {
     const g = await group.findById(_id);
     if (mongoose.Types.ObjectId(g.creator).equals(req.userId)) {
-      console.log("here");
+      // console.log("here");
       const posts = await postMessage.find({ groups: _id });
       for (const post of posts) {
-        if (post.groups.length === 1) {
-          await postMessage.deleteOne({ _id: post._id });
-          console.log(`Post ${post._id} deleted successfully`);
+        if (post.originGroup) {
+          if (post.groups.length === 1) {
+            await postMessage.deleteOne({ _id: post._id });
+            console.log(`Post ${post._id} deleted successfully`);
+          } else {
+            await postMessage.findByIdAndUpdate(post._id, {
+              $pull: { groups: _id },
+            });
+            // console.log(p);
+          }
         } else {
-          const p = await postMessage.findByIdAndUpdate(post._id, {
+          await postMessage.findByIdAndUpdate(post._id, {
             $pull: { groups: _id },
           });
-          console.log(p);
+          // console.log(p);
         }
       }
       await group.deleteOne({ _id: _id });
@@ -219,7 +226,7 @@ export const leaveGroup = async (req, res) => {
   try {
     const grp = await group.findById(_id);
     if (String(grp.creator) === req.userId) {
-      console.log("here");
+      // console.log("here");
       await group.findByIdAndUpdate(_id, {
         $pull: { access: req.userId },
       });
@@ -274,5 +281,14 @@ export const getGroupDetails = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json("Something went wrong!!");
+  }
+};
+//get all groups where the user has access to share posts
+export const getAllSharableGroups = async (req, res) => {
+  try {
+    const groups = await group.find({ access: req.userId }).select("name");
+    res.status(200).json(groups);
+  } catch (error) {
+    console.log(error);
   }
 };

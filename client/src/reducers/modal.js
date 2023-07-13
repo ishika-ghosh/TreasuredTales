@@ -5,10 +5,17 @@ import {
   CLOSE_POST_MODAL,
   OPEN_SHARE_MODAL,
   CLOSE_SHARE_MODAL,
+  OPEN_GROUP_SHARE_MODAL,
+  CLOSE_GROUP_SHARE_MODAL,
 } from "../actions/action";
 
 export const modal = (
-  state = { postModal: false, shareModal: false, groupModal: false },
+  state = {
+    postModal: false,
+    shareModal: false,
+    groupModal: false,
+    groupShareModal: false,
+  },
   action
 ) => {
   switch (action.type) {
@@ -24,6 +31,10 @@ export const modal = (
       return { ...state, groupModal: true };
     case CLOSE_GROUP_MODAL:
       return { ...state, groupModal: false };
+    case OPEN_GROUP_SHARE_MODAL:
+      return { ...state, groupShareModal: true };
+    case CLOSE_GROUP_SHARE_MODAL:
+      return { ...state, groupShareModal: false };
     default:
       return state;
   }

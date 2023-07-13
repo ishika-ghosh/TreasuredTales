@@ -32,6 +32,7 @@ export default function Post({
     isFavourite,
     editor,
     likedBy,
+    groups,
   } = post;
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
@@ -49,14 +50,14 @@ export default function Post({
     dispatch(handleSharedPost(id));
   };
   const handleLike = (id) => {
-    console.log(id);
+    // console.log(id);
     dispatch(LikeGroupPost(id, currentGroup._id));
   };
   return (
     <div
       className="post-card"
       onDoubleClick={() => {
-        console.log(post);
+        // console.log(post);
         dispatch({ type: SELECT_POST_DETAILS, payload: post });
       }}
     >
@@ -122,6 +123,7 @@ export default function Post({
               groupPost={groupPost}
               hasAccess={hasAccess}
               isCreator={creator._id === userId}
+              groups={groups}
             />
           )}
         </>

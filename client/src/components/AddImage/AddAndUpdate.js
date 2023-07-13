@@ -72,7 +72,7 @@ const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
           upload_preset: "trasuredTales",
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setPostData({ ...postData, selectedFile: res.data.url });
           setFileLoading(false);
         })

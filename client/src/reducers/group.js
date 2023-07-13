@@ -4,9 +4,15 @@ import {
   GROUP_LOADING,
   GROUP_ERROR,
   DELETE_GROUP,
+  SET_GROUP_OPTIONS,
 } from "../actions/action";
 
-const initialState = { loading: false, groups: [], error: null };
+const initialState = {
+  loading: false,
+  groups: [],
+  error: null,
+  groupSuggestions: [],
+};
 
 export const group = (state = initialState, action) => {
   switch (action.type) {
@@ -38,6 +44,11 @@ export const group = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action?.payload,
+      };
+    case SET_GROUP_OPTIONS:
+      return {
+        ...state,
+        groupSuggestions: action?.payload,
       };
     default:
       return state;

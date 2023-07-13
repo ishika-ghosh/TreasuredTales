@@ -31,7 +31,7 @@ export const posts = (state = initialState, action) => {
         ),
       };
     case FETCH_ALL:
-      console.log(action.payload);
+      // console.log(action.payload);
       return { ...state, loading: false, posts: action?.payload };
 
     case CREATE_POST:

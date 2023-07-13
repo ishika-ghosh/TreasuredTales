@@ -3,10 +3,15 @@ import {
   getAllEditorAccessPosts,
   getAllViewerAccessPosts,
 } from "../api/sharePost";
-import { FETCH_SHARE_POST, FETCH_SHARE_POST_LOADING } from "./action";
+import {
+  CLEAR_SELECTED_GROUP,
+  FETCH_SHARE_POST,
+  FETCH_SHARE_POST_LOADING,
+} from "./action";
 
 export const fetchAllMemory = () => async (dispatch) => {
   try {
+    dispatch({ type: CLEAR_SELECTED_GROUP });
     dispatch({ type: FETCH_SHARE_POST_LOADING });
     const { data } = await fetchSharedPost();
     dispatch({ type: FETCH_SHARE_POST, payload: data });

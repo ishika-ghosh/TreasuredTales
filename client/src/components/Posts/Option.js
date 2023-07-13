@@ -12,8 +12,17 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
+import SendIcon from "@mui/icons-material/Send";
 import { Divider } from "@mui/material";
-function Option({ sharedPost, editor, groupPost, hasAccess, isCreator }) {
+import { fetchGroupSuggestions } from "../../actions/groups";
+function Option({
+  sharedPost,
+  editor,
+  groupPost,
+  hasAccess,
+  isCreator,
+  groups,
+}) {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
   const currentGroupId = useSelector((state) => state.selectedGroup);
@@ -35,6 +44,9 @@ function Option({ sharedPost, editor, groupPost, hasAccess, isCreator }) {
   };
   const handleShare = () => {
     dispatch({ type: OPEN_SHARE_MODAL });
+  };
+  const handleGroupShare = () => {
+    dispatch(fetchGroupSuggestions(groups));
   };
 
   return (
@@ -58,6 +70,16 @@ function Option({ sharedPost, editor, groupPost, hasAccess, isCreator }) {
             <li>
               <button className="button" onClick={handleShare}>
                 <ShareIcon /> <span>Share</span>
+              </button>
+            </li>
+            <Divider />
+          </>
+        )}
+        {isCreator && !sharedPost && (
+          <>
+            <li>
+              <button className="button" onClick={handleGroupShare}>
+                <SendIcon /> <span>Send</span>
               </button>
             </li>
             <Divider />

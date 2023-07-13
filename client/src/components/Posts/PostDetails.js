@@ -11,14 +11,25 @@ import CloseIcon from "@mui/icons-material/Close";
 import ShareIcon from "@mui/icons-material/Share";
 import { CLOSE_POST_DETAILS } from "./../../actions/action";
 import picture from "./picture.png";
+import { removeAccess } from "../../actions/posts";
+
 function PostDetails({ open, details }) {
   const editors = details?.editor.filter(
     (user) => user._id !== details.creator._id
   );
   const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
+  const [change, setChange] = useState(false);
   const handleClose = () => {
     dispatch({ type: CLOSE_POST_DETAILS });
+    if (change) {
+      window.location.reload(false);
+      setChange(false);
+    }
+  };
+  const handleDelete = (id, op) => {
+    dispatch(removeAccess(op, details._id, id));
+    setChange(true);
   };
   return (
     <div className={open ? "detailed-container" : "detailed-container closed"}>
@@ -143,7 +154,7 @@ function PostDetails({ open, details }) {
                           <Chip
                             key={user._id}
                             label={user.email}
-                            onDelete={() => console.log("delete")}
+                            onDelete={() => handleDelete(user._id, 1)}
                             sx={{ color: "white" }}
                           />
                         ))}
@@ -160,7 +171,7 @@ function PostDetails({ open, details }) {
                           <Chip
                             key={user._id}
                             label={user.email}
-                            onDelete={() => console.log("delete")}
+                            onDelete={() => handleDelete(user._id, 2)}
                             sx={{ color: "white" }}
                           />
                         ))}

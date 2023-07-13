@@ -12,6 +12,7 @@ import "./App.css";
 import GroupDetail from "./components/Pages/GroupDetail";
 import Profile from "./components/common/Profile";
 import PostDetails from "./components/Posts/PostDetails";
+import GroupSuggestion from "./components/common/GroupSuggestion";
 
 function App() {
   const [isloading, setIsloading] = useState(true);
@@ -20,12 +21,18 @@ function App() {
   const { postState: postDetails, currentPost } = useSelector(
     (state) => state.postDetails
   );
+  const currentGroup = useSelector((state) => state.currentGroup.details);
 
   return (
     <>
       <BrowserRouter>
         <Navbar setProfile={() => setProfile(true)} />
-        <PostDetails open={postDetails} details={currentPost} />
+        <PostDetails
+          open={postDetails}
+          details={currentPost}
+          groupPost={currentGroup}
+        />
+        <GroupSuggestion />
         <Routes>
           <Route
             exact
