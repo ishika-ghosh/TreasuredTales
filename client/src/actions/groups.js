@@ -53,13 +53,14 @@ export const createNewGroup = (groupData) => async (dispatch) => {
   }
 };
 
-export const groupDetails = (id) => async (dispatch) => {
+export const groupDetails = (id, navigate) => async (dispatch) => {
   try {
     const { data } = await getGroupDetails(id);
     dispatch({ type: CURRENT_GROUP_DETAILS, payload: data });
     console.log(data);
   } catch (error) {
     console.log(error);
+    navigate("/error");
   }
 };
 export const kickFromGroup = (id, memberId) => async (dispatch) => {

@@ -49,7 +49,16 @@ export const fetchPosts = (setIsloading) => async (dispatch) => {
     dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) {
     console.log(error);
-    dispatch({ type: LOGOUT });
+    if (error?.message) {
+      dispatch({ type: ERROR, payload: error.message });
+      return;
+    }
+    const { data } = error.response;
+    if (data?.error === "token expired" || data.error === "Unauthorized") {
+      dispatch({ type: LOGOUT });
+    } else {
+      dispatch({ type: ERROR, payload: data?.message || data?.error });
+    }
   }
 };
 export const createMemory = (post) => async (dispatch) => {
@@ -62,7 +71,16 @@ export const createMemory = (post) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   } catch (error) {
     console.log(error);
-    dispatch({ type: LOGOUT });
+    if (error?.message) {
+      dispatch({ type: ERROR, payload: error.message });
+      return;
+    }
+    const { data } = error.response;
+    if (data?.error === "token expired" || data.error === "Unauthorized") {
+      dispatch({ type: LOGOUT });
+    } else {
+      dispatch({ type: ERROR, payload: data?.message || data?.error });
+    }
   }
 };
 
@@ -76,7 +94,16 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
   } catch (error) {
     console.log(error);
-    dispatch({ type: LOGOUT });
+    if (error?.message) {
+      dispatch({ type: ERROR, payload: error.message });
+      return;
+    }
+    const { data } = error.response;
+    if (data?.error === "token expired" || data.error === "Unauthorized") {
+      dispatch({ type: LOGOUT });
+    } else {
+      dispatch({ type: ERROR, payload: data?.message || data?.error });
+    }
   }
 };
 export const deleteMemory = (id, sharedPost) => async (dispatch) => {
@@ -91,7 +118,18 @@ export const deleteMemory = (id, sharedPost) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory deleted successfully" });
   } catch (error) {
     console.log(error);
-    dispatch({ type: LOGOUT });
+    if (error?.message) {
+      dispatch({ type: ERROR, payload: error.message });
+      dispatch({ type: CLEAR_SELECTED_POST });
+      return;
+    }
+    const { data } = error.response;
+    if (data?.error === "token expired" || data.error === "Unauthorized") {
+      dispatch({ type: LOGOUT });
+    } else {
+      dispatch({ type: ERROR, payload: data?.message || data?.error });
+    }
+    dispatch({ type: CLEAR_SELECTED_POST });
   }
 };
 export const shareMemory = (id, shareData) => async (dispatch) => {
@@ -109,6 +147,11 @@ export const shareMemory = (id, shareData) => async (dispatch) => {
     dispatch({ type: CLOSE_SHARE_MODAL });
   } catch (error) {
     console.log(error);
+    if (error?.message) {
+      dispatch({ type: ERROR, payload: error.message });
+      dispatch({ type: CLEAR_SELECTED_POST });
+      return;
+    }
     const { data } = error.response;
     console.log(data.message);
     dispatch({
@@ -163,13 +206,14 @@ export const removeAccess = (option, postId, memberId) => async (dispatch) => {
 };
 //group post CRUD
 
-export const getAllGroupPosts = (id) => async (dispatch) => {
+export const getAllGroupPosts = (id, navigate) => async (dispatch) => {
   try {
     const { data } = await getGroupPost(id);
     console.log(data);
     dispatch({ type: GET_GROUP_POSTS, payload: data });
   } catch (error) {
     console.log(error);
+    navigate("/error");
   }
 };
 export const addGroupPost = (id, post) => async (dispatch) => {

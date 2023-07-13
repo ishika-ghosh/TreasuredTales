@@ -13,6 +13,7 @@ import GroupDetail from "./components/Pages/GroupDetail";
 import Profile from "./components/common/Profile";
 import PostDetails from "./components/Posts/PostDetails";
 import GroupSuggestion from "./components/common/GroupSuggestion";
+import NotFound from "./components/Pages/NotFound";
 
 function App() {
   const [isloading, setIsloading] = useState(true);
@@ -48,6 +49,7 @@ function App() {
             }
           />
           <Route exact path="/groups/:id" element={<GroupDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <SnackBar />
         <Profile open={profile} handleProfile={() => setProfile(false)} />

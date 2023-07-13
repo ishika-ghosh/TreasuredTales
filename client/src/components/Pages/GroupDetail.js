@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CircularProgress, Divider, Drawer } from "@mui/material";
 import {
   SELECTED_GROUP,
@@ -18,10 +18,13 @@ function GroupDetail() {
   const { id } = useParams();
   const [drawer, setDrawer] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const currentGroupId = useSelector((state) => state.selectedGroup);
-  const { details: currentGroupDetails, loading, postLoading } = useSelector(
-    (state) => state.currentGroup
-  );
+  const {
+    details: currentGroupDetails,
+    loading,
+    postLoading,
+  } = useSelector((state) => state.currentGroup);
 
   const toggleDrawer = (open) => {
     setDrawer(open);
@@ -31,9 +34,9 @@ function GroupDetail() {
     dispatch({ type: CURRENT_GROUP_LOADING });
     dispatch({ type: GROUP_POST_LOADING });
     dispatch({ type: SELECTED_GROUP, payload: id });
-    dispatch(groupDetails(currentGroupId));
-    dispatch(getAllGroupPosts(currentGroupId));
-  }, [dispatch, id, currentGroupId]);
+    dispatch(groupDetails(currentGroupId, navigate));
+    dispatch(getAllGroupPosts(currentGroupId, navigate));
+  }, [dispatch, id, currentGroupId, navigate]);
 
   return (
     <div style={{ marginTop: "80px" }}>
