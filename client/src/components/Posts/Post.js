@@ -36,7 +36,7 @@ export default function Post({
   } = post;
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.selectedId);
-  const currentGroup = useSelector((state) => state.currentGroup.details);
+  const currentGroupId = useSelector((state) => state.selectedGroup);
   const handleFunction = (id) => {
     var _id = null;
     if (currentId) {
@@ -51,7 +51,7 @@ export default function Post({
   };
   const handleLike = (id) => {
     // console.log(id);
-    dispatch(LikeGroupPost(id, currentGroup._id));
+    dispatch(LikeGroupPost(id, currentGroupId));
   };
   return (
     <div

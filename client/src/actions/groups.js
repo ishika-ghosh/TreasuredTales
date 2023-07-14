@@ -60,7 +60,7 @@ export const groupDetails = (id, navigate) => async (dispatch) => {
     console.log(data);
   } catch (error) {
     console.log(error);
-    navigate("/error");
+    // navigate("/error");
   }
 };
 export const kickFromGroup = (id, memberId) => async (dispatch) => {
@@ -80,6 +80,7 @@ export const deleteGroupWithAllMemories = (id) => async (dispatch) => {
     dispatch({ type: DELETE_GROUP, payload: id });
     dispatch({ type: SUCCESS, payload: "Group deleted successfully" });
     dispatch({ type: CLEAR_SELECTED_GROUP });
+    dispatch({ type: CURRENT_GROUP_DETAILS, payload: null });
   } catch (error) {
     console.log(error);
   }
@@ -120,6 +121,7 @@ export const leaveAGroup = (groupId) => async (dispatch) => {
     dispatch({ type: DELETE_GROUP, payload: groupId });
     dispatch({ type: SUCCESS, payload: "You left the group successfully" });
     dispatch({ type: CLEAR_SELECTED_GROUP });
+    dispatch({ type: CURRENT_GROUP_DETAILS, payload: null });
   } catch (error) {
     console.log(error);
   }

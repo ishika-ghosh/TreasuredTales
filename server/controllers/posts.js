@@ -7,7 +7,7 @@ export const getPosts = async (req, res) => {
   const { groupid: q } = req.query;
   if (q) {
     if (!mongoose.Types.ObjectId.isValid(q)) {
-      return res.status(404).json("Not a valid id");
+      return res.status(404).json({ message: "Not a valid id" });
     }
     try {
       const posts = await postMessage
@@ -62,7 +62,7 @@ export const createPost = async (req, res) => {
   const post = req.body;
   const { groupid: q } = req.query;
   if (!post.title || !post.selectedFile) {
-    return res.json({ error: "Please select a file" });
+    return res.status(400).json({ message: "Please select a file" });
   }
   let newPost;
   if (q) {
@@ -108,15 +108,28 @@ export const createPost = async (req, res) => {
 };
 export const updatePost = async (req, res) => {
   const { id: _id } = req.params;
-  const post = req.body;
+  const { groupid: q } = req.query;
+  const postData = req.body;
   if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Not a valid id");
+    return res.status(404).json({ message: "Not a valid id" });
   try {
+    if (q) {
+      const grp = await group.findById(q);
+      if (!grp) {
+        return res.status(404).json({ message: "Group not found" });
+      }
+      if (!grp.access.includes(req.userId)) {
+        return res
+          .status(403)
+          .json({ message: "You dont have access to update the post" });
+      }
+    }
+
     const updatedPost = await postMessage
       .findByIdAndUpdate(
         _id,
         {
-          ...post,
+          ...postData,
           editDetails: {
             editedAt: new Date().toISOString(),
             editedBy: req.userId,
@@ -138,7 +151,7 @@ export const updatePost = async (req, res) => {
       })
       .populate("editor", "email")
       .populate("viewer", "email");
-    // console.log(updatedPost);
+    console.log(updatedPost);
     res.json(updatedPost);
   } catch (error) {
     console.log(error);
@@ -148,45 +161,43 @@ export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
   const { groupid: q } = req.query;
   if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).json({ error: "Not a valid id" });
+    return res.status(404).json({ message: "Not a valid id" });
   const post = await postMessage.findById(_id);
+  if (!post) {
+    return res.status(404).json({ message: "Not a valid post" });
+  }
   try {
     if (q) {
       const grp = await group.findById(q);
+      if (!grp) {
+        return res.status(404).json({ message: "Not a valid groupId" });
+      }
+      console.log(grp);
       if (post.groups.includes(q)) {
-        //requesting user is the creator of the post and he has access to CRUD the posts of the group
-        if (
-          grp.access.includes(req.userId) &&
-          String(post.creator) === req.userId
-        ) {
-          //If the post belongs to multiple groups
-          if (post.groups.length > 1) {
-            await postMessage.findByIdAndUpdate(
-              _id,
-              { $pull: { groups: q } },
-              { new: true }
-            );
-            return res.status(200).json("Memory removed successfully");
-          } else {
-            //post belongs to single group
-            if (post.originGroup) {
-              //check if the post is created in some group then delete the whole post
-              await postMessage.findByIdAndDelete(_id);
-              res.json({ message: "the data is successfully deleted" });
-            } else {
-              //else just update the post
+        if (post.originGroup) {
+          //if the user has access to the group
+          if (grp.access.includes(req.userId)) {
+            if (post.groups.length > 1) {
               await postMessage.findByIdAndUpdate(
                 _id,
                 { $pull: { groups: q } },
                 { new: true }
               );
               return res.status(200).json("Memory removed successfully");
+            } else {
+              await postMessage.findByIdAndDelete(_id);
+              res.json({ message: "the data is successfully deleted" });
             }
           }
         } else {
-          return res
-            .status(403)
-            .json({ message: "You don't have access to delete this post" });
+          if (grp.access.includes(req.userId)) {
+            await postMessage.findByIdAndUpdate(
+              _id,
+              { $pull: { groups: q } },
+              { new: true }
+            );
+            return res.status(200).json("Memory removed successfully");
+          }
         }
       } else {
         return res
@@ -233,7 +244,7 @@ export const sharePost = async (req, res) => {
   const { id: _id } = req.params;
   const shareData = req.body;
   if (!mongoose.Types.ObjectId.isValid(_id)) {
-    return res.status(404).send("Not a valid Id");
+    return res.status(404).json({ message: "Not a valid Id" });
   }
   const existingUser = await User.findOne({ email: shareData.email });
   if (!existingUser) {
@@ -425,7 +436,7 @@ export const likeGroupPost = async (req, res) => {
     !mongoose.Types.ObjectId.isValid(_id) &&
     !mongoose.Types.ObjectId.isValid(q)
   )
-    return res.status(404).json({ error: "Not a valid id" });
+    return res.status(404).json({ message: "Not a valid id" });
   try {
     if (q) {
       const post = await postMessage.findById(_id);
@@ -497,29 +508,35 @@ export const sharePostToGroup = async (req, res) => {
         .status(400)
         .json({ message: "The post is already in that group" });
     } else {
-      const update = await postMessage
-        .findByIdAndUpdate(
-          _id,
-          {
-            $push: { groups: groupId },
-          },
-          {
-            new: true,
-          }
-        )
-        .populate({
-          path: "creator",
-          model: "user",
-          select: "name",
-        })
-        .populate({
-          path: "editDetails.editedBy",
-          model: "user",
-          select: "name",
-        })
-        .populate("editor", "email")
-        .populate("viewer", "email");
-      return res.status(200).json(update);
+      if (String(post.creator) === req.userId) {
+        const update = await postMessage
+          .findByIdAndUpdate(
+            _id,
+            {
+              $push: { groups: groupId },
+            },
+            {
+              new: true,
+            }
+          )
+          .populate({
+            path: "creator",
+            model: "user",
+            select: "name",
+          })
+          .populate({
+            path: "editDetails.editedBy",
+            model: "user",
+            select: "name",
+          })
+          .populate("editor", "email")
+          .populate("viewer", "email");
+        return res.status(200).json(update);
+      } else {
+        return res
+          .status(403)
+          .json({ message: "You dont have access to share this post" });
+      }
     }
   } catch (error) {
     console.log(error);

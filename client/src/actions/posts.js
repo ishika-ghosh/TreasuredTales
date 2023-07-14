@@ -182,6 +182,20 @@ export const updateSharedMemory = (id, updatedPost) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
   } catch (error) {
     console.log(error);
+
+    const { data } = error.response;
+    if (data !== undefined) {
+      if (data?.error === "token expired" || data.error === "Unauthorized") {
+        dispatch({ type: LOGOUT });
+      } else {
+        dispatch({ type: ERROR, payload: data?.message || data?.error });
+      }
+    } else {
+      if (error?.message) {
+        dispatch({ type: ERROR, payload: error.message });
+        return;
+      }
+    }
   }
 };
 export const removeAccess = (option, postId, memberId) => async (dispatch) => {
@@ -213,7 +227,7 @@ export const getAllGroupPosts = (id, navigate) => async (dispatch) => {
     dispatch({ type: GET_GROUP_POSTS, payload: data });
   } catch (error) {
     console.log(error);
-    navigate("/error");
+    // navigate("/error");
   }
 };
 export const addGroupPost = (id, post) => async (dispatch) => {
@@ -227,15 +241,18 @@ export const addGroupPost = (id, post) => async (dispatch) => {
     console.log(error);
   }
 };
-export const updateGroupMemory = (postId, post) => async (dispatch) => {
-  try {
-    const { data } = await updateGroupPost(postId, post);
-    dispatch({ type: UPDATE_GROUP_POST, payload: data });
-    dispatch({ type: CLEAR_SELECTED_POST });
-    dispatch({ type: CLOSE_POST_MODAL });
-    dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
-  } catch (error) {}
-};
+export const updateGroupMemory =
+  (postId, post, groupId) => async (dispatch) => {
+    try {
+      const { data } = await updateGroupPost(postId, post, groupId);
+      dispatch({ type: UPDATE_GROUP_POST, payload: data });
+      dispatch({ type: CLEAR_SELECTED_POST });
+      dispatch({ type: CLOSE_POST_MODAL });
+      dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 export const deleteGroupMemory = (postId, groupId) => async (dispatch) => {
   try {
     await deleteGroupPost(groupId, postId);

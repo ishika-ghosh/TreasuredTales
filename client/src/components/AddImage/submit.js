@@ -26,7 +26,7 @@ export const handleSubmit = (
     if (currentGroupId) {
       dispatch({ type: GROUP_POST_LOADING });
       if (currentId) {
-        dispatch(updateGroupMemory(currentId, postData));
+        dispatch(updateGroupMemory(currentId, postData, currentGroupId));
         handleClear();
       } else {
         dispatch(addGroupPost(currentGroupId, postData));

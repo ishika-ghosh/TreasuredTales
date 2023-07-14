@@ -83,3 +83,8 @@
     margin-top: 20px;
     font-family: "Poppins", sans-serif;
 }
+@media screen and (max-width: 700px) {
+    .med-card{
+        display: none;
+    }
+}

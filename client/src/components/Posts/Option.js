@@ -94,7 +94,7 @@ function Option({
             </button>
           </li>
         )}
-        {currentGroupId && isCreator && (
+        {currentGroupId && hasAccess && (
           <button className="button" onClick={handleDelete}>
             <DeleteIcon />
             <span>Remove</span>
