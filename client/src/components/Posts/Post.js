@@ -67,8 +67,8 @@ export default function Post({
         <>
           <img
             className="card-image"
-            src={selectedFile}
-            srcSet={selectedFile}
+            src={`${selectedFile}`}
+            srcSet={`${selectedFile}`}
             alt={title}
             loading="lazy"
             draggable={false}
