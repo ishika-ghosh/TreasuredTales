@@ -49,12 +49,11 @@ export const fetchPosts = (setIsloading) => async (dispatch) => {
     dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) {
     console.log(error);
-    if (error?.message) {
-      dispatch({ type: ERROR, payload: error.message });
-      return;
-    }
     const { data } = error.response;
-    if (data?.error === "token expired" || data.error === "Unauthorized") {
+    if (
+      data?.error !== undefined &&
+      (data?.error === "token expired" || data.error === "Unauthorized")
+    ) {
       dispatch({ type: LOGOUT });
     } else {
       dispatch({ type: ERROR, payload: data?.message || data?.error });
@@ -71,12 +70,11 @@ export const createMemory = (post) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory created successfully" });
   } catch (error) {
     console.log(error);
-    if (error?.message) {
-      dispatch({ type: ERROR, payload: error.message });
-      return;
-    }
     const { data } = error.response;
-    if (data?.error === "token expired" || data.error === "Unauthorized") {
+    if (
+      data?.error !== undefined &&
+      (data?.error === "token expired" || data.error === "Unauthorized")
+    ) {
       dispatch({ type: LOGOUT });
     } else {
       dispatch({ type: ERROR, payload: data?.message || data?.error });
@@ -94,12 +92,11 @@ export const updateMemory = (id, updatedPost) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory updated successfully" });
   } catch (error) {
     console.log(error);
-    if (error?.message) {
-      dispatch({ type: ERROR, payload: error.message });
-      return;
-    }
     const { data } = error.response;
-    if (data?.error === "token expired" || data.error === "Unauthorized") {
+    if (
+      data?.error !== undefined &&
+      (data?.error === "token expired" || data.error === "Unauthorized")
+    ) {
       dispatch({ type: LOGOUT });
     } else {
       dispatch({ type: ERROR, payload: data?.message || data?.error });
@@ -118,13 +115,16 @@ export const deleteMemory = (id, sharedPost) => async (dispatch) => {
     dispatch({ type: SUCCESS, payload: "Memory deleted successfully" });
   } catch (error) {
     console.log(error);
+    const { data } = error.response;
     if (error?.message) {
       dispatch({ type: ERROR, payload: error.message });
       dispatch({ type: CLEAR_SELECTED_POST });
       return;
     }
-    const { data } = error.response;
-    if (data?.error === "token expired" || data.error === "Unauthorized") {
+    if (
+      data !== undefined &&
+      (data?.error === "token expired" || data.error === "Unauthorized")
+    ) {
       dispatch({ type: LOGOUT });
     } else {
       dispatch({ type: ERROR, payload: data?.message || data?.error });
