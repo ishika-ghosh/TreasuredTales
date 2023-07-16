@@ -225,6 +225,27 @@ export const leaveGroup = async (req, res) => {
   }
   try {
     const grp = await group.findById(_id);
+    if (!grp) {
+      return res.status(404).json({ message: "Invalid Group" });
+    }
+    const posts = await postMessage.find({ groups: _id });
+    for (const post of posts) {
+      if (String(post.creator) === req.userId) {
+        if (post.groups.length > 1) {
+          await postMessage.findByIdAndUpdate(post._id, {
+            $pull: { groups: _id },
+          });
+        } else {
+          if (post.originGroup) {
+            await postMessage.deleteOne({ _id: post._id });
+          } else {
+            await postMessage.findByIdAndUpdate(post._id, {
+              $pull: { groups: _id },
+            });
+          }
+        }
+      }
+    }
     if (String(grp.creator) === req.userId) {
       // console.log("here");
       await group.findByIdAndUpdate(_id, {
