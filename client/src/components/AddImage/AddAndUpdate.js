@@ -73,7 +73,7 @@ const AddAndUpdate = React.forwardRef(({ loading }, ref) => {
         })
         .then((res) => {
           // console.log(res);
-          setPostData({ ...postData, selectedFile: res.data.url });
+          setPostData({ ...postData, selectedFile: res.data.secure_url });
           setFileLoading(false);
         })
         .catch((err) => {

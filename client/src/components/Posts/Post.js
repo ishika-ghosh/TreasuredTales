@@ -102,7 +102,7 @@ export default function Post({
           )}
 
           <div className="card-body prevent-select">
-            <h1 className="caed-title">{title}</h1>
+            <h1 className="card-title">{title}</h1>
             <p className="card-message">{message}</p>
             <p className="card-tags">{tags.map((t) => `${t} `)} </p>
             <p className="card-message">
