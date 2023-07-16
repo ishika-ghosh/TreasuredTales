@@ -55,7 +55,7 @@
     background: #95979942;
     box-shadow: 5px 5px 10px #b6afaf, -5px -5px 10px #ffffff;
     border-radius: 50%;
-    margin: 0 30px 0 30px;
+    /* margin: 0 30px 0 30px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,11 +80,26 @@
     text-align: center;
     color: #665e5e;
     padding: 0 30px 0 30px;
-    margin-top: 20px;
+    margin-top: 10px;
     font-family: "Poppins", sans-serif;
 }
+
 @media screen and (max-width: 700px) {
     .med-card{
-        display: none;
+        width: 70%;
+        height: 70%;
     }
+    .med-card .circle{
+        width: 68%;
+        height: 68%;
+        margin: 5px;
+    }
+    .med-card .empty-logo{
+        width: 40px;
+        height: 40px;
+    }
+        .med-card .header,
+        .para{
+            padding: 0;
+        }
 }

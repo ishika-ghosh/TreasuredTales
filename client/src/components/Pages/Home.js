@@ -5,6 +5,7 @@ import { fetchPosts } from "../../actions/posts";
 import Posts from "../Posts/Posts";
 import Share from "../Share/Share";
 import AddPost from "../AddImage/AddPost";
+import EmptySpace from "../common/EmptySpace";
 
 function Home({ isloading, setIsloading }) {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function Home({ isloading, setIsloading }) {
       dispatch(fetchPosts(setIsloading));
     }
   }, [dispatch, user, setIsloading]);
-  return (
+  return user ? (
     <div style={{ marginTop: "80px" }}>
       <AddPost />
       <Posts
@@ -26,6 +27,8 @@ function Home({ isloading, setIsloading }) {
       />
       <Share />
     </div>
+  ) : (
+    <EmptySpace signup={true} />
   );
 }
 

@@ -52,7 +52,7 @@ export default function Posts({ isloading, posts, sharedPosts, groupPosts }) {
       </Paper>
     )
   ) : posts.length === 0 ? (
-    <EmptySpace />
+    <EmptySpace signup={false} />
   ) : (
     <Box sx={styles}>
       <ImageList variant="masonry" cols={setCols()} gap={5}>

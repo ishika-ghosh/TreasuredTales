@@ -39,7 +39,7 @@ function Groups({ isloading, setCols }) {
         </ImageList>
       </div>
     ) : (
-      <EmptySpace />
+      <EmptySpace signup={false} />
     )
   ) : (
     <CircularProgress />

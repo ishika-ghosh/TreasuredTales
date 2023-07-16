@@ -73,57 +73,59 @@ function Navbar({ setProfile }) {
             TreasuredTales
           </Typography>
 
-          <Box sx={styles.menuBox}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page.path} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link
-                      to={page.path}
-                      style={{
-                        textDecoration: "none",
-                        color: "black",
-                      }}
-                    >
-                      {page.name}
-                    </Link>
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {user && (
+            <Box sx={styles.menuBox}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem key={page.path} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">
+                      <Link
+                        to={page.path}
+                        style={{
+                          textDecoration: "none",
+                          color: "black",
+                        }}
+                      >
+                        {page.name}
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
           <ImageSearchIcon
             sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
           />
           <Typography
-            variant="h5"
+            variant="subtitle1"
             noWrap
             component="a"
             href=""
@@ -131,22 +133,24 @@ function Navbar({ setProfile }) {
           >
             TreasuredTales
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.path}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                <Link
-                  to={page.path}
-                  style={{ textDecoration: "none", color: "white" }}
+          {user && (
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page.path}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page.name}
-                </Link>
-              </Button>
-            ))}
-          </Box>
+                  <Link
+                    to={page.path}
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    {page.name}
+                  </Link>
+                </Button>
+              ))}
+            </Box>
+          )}
 
           <Typography
             variant="h6"
@@ -194,11 +198,15 @@ function Navbar({ setProfile }) {
               </Menu>
             </Box>
           ) : (
-            <button style={styles.btnStyle} onClick={() => navigate("/auth")}>
+            <Button
+              style={styles.btnStyle}
+              onClick={() => navigate("/auth")}
+              sx={{ ml: { lg: "70%", md: "60%", xs: 0 } }}
+            >
               <Link to="/auth" style={styles.linkStyle}>
-                <Typography>Sign In</Typography>
+                <Typography variant="button-text">Sign In</Typography>
               </Link>
-            </button>
+            </Button>
           )}
         </Toolbar>
       </Container>

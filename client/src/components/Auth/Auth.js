@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../Forms/AuthForm";
 import { signin, signup } from "../../actions/auth";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
 
 const initialState = {
   firstName: "",
@@ -26,15 +27,17 @@ const initialState = {
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const [signLoading, setSignLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSignLoading(true);
     if (isSignUp) {
-      dispatch(signup(formData, navigate));
+      dispatch(signup(formData, navigate, setSignLoading));
     } else {
-      dispatch(signin(formData, navigate));
+      dispatch(signin(formData, navigate, setSignLoading));
     }
   };
   const handleChange = (e) => {
@@ -57,14 +60,15 @@ export default function Auth() {
             formData={formData}
             handleChange={handleChange}
           />
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            loading={signLoading}
           >
             {isSignUp ? "Sign Up" : "Sign In"}
-          </Button>
+          </LoadingButton>
 
           <Grid container>
             <Grid item>
