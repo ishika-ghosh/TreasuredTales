@@ -64,13 +64,13 @@ function Navbar({ setProfile }) {
         <Toolbar disableGutters>
           <ImageSearchIcon sx={styles.icon} />
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
             component="a"
             href="/"
             sx={styles.App}
           >
-            Memories
+            TreasuredTales
           </Typography>
 
           <Box sx={styles.menuBox}>
@@ -129,7 +129,7 @@ function Navbar({ setProfile }) {
             href=""
             sx={styles.responsiveText}
           >
-            Memories
+            TreasuredTales
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
