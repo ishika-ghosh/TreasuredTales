@@ -11,6 +11,7 @@ export const signup =
     } catch (error) {
       const { response } = error;
       dispatch({ type: ERROR, payload: response.data.error });
+      setSignLoading(false);
     }
   };
 export const signin =
@@ -28,5 +29,6 @@ export const signin =
       const { response } = error;
       console.log(error);
       dispatch({ type: ERROR, payload: response.data.error });
+      setSignLoading(false);
     }
   };
