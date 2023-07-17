@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Chip } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -14,6 +14,7 @@ import picture from "./picture.png";
 import { removeAccess } from "../../actions/posts";
 
 function PostDetails({ open, details }) {
+  const userId = useSelector((state) => state.userAuth.authData?.data?._id);
   const editors = details?.editor.filter(
     (user) => user._id !== details.creator._id
   );
@@ -150,14 +151,22 @@ function PostDetails({ open, details }) {
                     <div className="main-heading access">Editors</div>
                     {
                       <div className="heading-content access">
-                        {editors?.map((user) => (
-                          <Chip
-                            key={user._id}
-                            label={user.email}
-                            onDelete={() => handleDelete(user._id, 1)}
-                            sx={{ color: "white" }}
-                          />
-                        ))}
+                        {editors?.map((user) =>
+                          details.creator._id === userId ? (
+                            <Chip
+                              key={user._id}
+                              label={user.email}
+                              onDelete={() => handleDelete(user._id, 1)}
+                              sx={{ color: "white" }}
+                            />
+                          ) : (
+                            <Chip
+                              key={user._id}
+                              label={user.email}
+                              sx={{ color: "white" }}
+                            />
+                          )
+                        )}
                       </div>
                     }
                   </div>
@@ -167,14 +176,22 @@ function PostDetails({ open, details }) {
                     <div className="main-heading access">Viewers</div>
                     {
                       <div className="heading-content access">
-                        {details.viewer.map((user) => (
-                          <Chip
-                            key={user._id}
-                            label={user.email}
-                            onDelete={() => handleDelete(user._id, 2)}
-                            sx={{ color: "white" }}
-                          />
-                        ))}
+                        {details.viewer.map((user) =>
+                          details.creator._id === userId ? (
+                            <Chip
+                              key={user._id}
+                              label={user.email}
+                              onDelete={() => handleDelete(user._id, 2)}
+                              sx={{ color: "white" }}
+                            />
+                          ) : (
+                            <Chip
+                              key={user._id}
+                              label={user.email}
+                              sx={{ color: "white" }}
+                            />
+                          )
+                        )}
                       </div>
                     }
                   </div>
