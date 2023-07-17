@@ -27,7 +27,9 @@ export const getAllSharedPosts = async (req, res) => {
         path: "editDetails.editedBy",
         model: "user",
         select: "-password",
-      });
+      })
+      .populate("editor", "email")
+      .populate("viewer", "email");
     const x = isFavourite(posts, req.userId);
     return res.status(200).json(x);
   } catch (error) {
@@ -61,7 +63,9 @@ export const addOrRemoveFavourite = async (req, res) => {
           path: "editDetails.editedBy",
           model: "user",
           select: "-password",
-        });
+        })
+        .populate("editor", "email")
+        .populate("viewer", "email");
       return res.status(200).json({ ...updated._doc, isFavourite: false });
     } else {
       updated = await postMessage
@@ -81,7 +85,9 @@ export const addOrRemoveFavourite = async (req, res) => {
           path: "editDetails.editedBy",
           model: "user",
           select: "-password",
-        });
+        })
+        .populate("editor", "email")
+        .populate("viewer", "email");
       return res.status(200).json({ ...updated._doc, isFavourite: true });
     }
   } catch (error) {
@@ -110,7 +116,9 @@ export const getAllEditorAccessPosts = async (req, res) => {
         path: "editDetails.editedBy",
         model: "user",
         select: "-password",
-      });
+      })
+      .populate("editor", "email")
+      .populate("viewer", "email");
     posts = isFavourite(posts, req.userId);
     return res.status(200).json(posts);
   } catch (error) {
@@ -139,7 +147,9 @@ export const getAllViewerAccessPosts = async (req, res) => {
         path: "editDetails.editedBy",
         model: "user",
         select: "-password",
-      });
+      })
+      .populate("editor", "email")
+      .populate("viewer", "email");
     posts = isFavourite(posts, req.userId);
     return res.status(200).json(posts);
   } catch (error) {

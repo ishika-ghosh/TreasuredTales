@@ -52,7 +52,7 @@ function Option({
   return (
     <div className="option-div">
       <ul style={{ listStyle: "none" }}>
-        {((editor.includes(userId) && sharedPost) ||
+        {((editor.some((user) => user._id === userId) && sharedPost) ||
           (groupPost && hasAccess) ||
           isCreator) && (
           <li>
